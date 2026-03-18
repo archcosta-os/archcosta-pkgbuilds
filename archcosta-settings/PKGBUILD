@@ -1,6 +1,6 @@
 pkgname=archcosta-settings
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="System settings and tweaks for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-settings"
@@ -10,27 +10,20 @@ source=("git+https://github.com/archcosta-os/archcosta-settings.git")
 sha256sums=('SKIP')
 
 package() {
+    cd "$srcdir/archcosta-settings"
     # sysctl tweaks
-    install -Dm644 "$srcdir/archcosta-settings/etc/sysctl.d/99-archcosta.conf" \
+    install -Dm644 etc/sysctl.d/99-archcosta.conf \
         "$pkgdir/etc/sysctl.d/99-archcosta.conf"
 
     # udev rules
-    install -Dm644 "$srcdir/archcosta-settings/etc/udev/rules.d/60-ioschedulers.rules" \
+    install -Dm644 etc/udev/rules.d/60-ioschedulers.rules \
         "$pkgdir/etc/udev/rules.d/60-ioschedulers.rules"
 
     # systemd units
-    install -Dm644 "$srcdir/archcosta-settings/etc/systemd/zram-generator.conf" \
+    install -Dm644 etc/systemd/zram-generator.conf \
         "$pkgdir/etc/systemd/zram-generator.conf"
         
-    # cpupower config
-    install -Dm644 "$srcdir/archcosta-settings/etc/default/cpupower" \
-        "$pkgdir/etc/default/cpupower"
-        
-    # earlyoom config
-    install -Dm644 "$srcdir/archcosta-settings/etc/default/earlyoom" \
-        "$pkgdir/etc/default/earlyoom"
-        
     # lite-mode script
-    install -Dm755 "$srcdir/archcosta-settings/usr/lib/archcosta/lite-mode" \
+    install -Dm755 usr/lib/archcosta/lite-mode \
         "$pkgdir/usr/lib/archcosta/lite-mode"
 }

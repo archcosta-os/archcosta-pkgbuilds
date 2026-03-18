@@ -1,6 +1,6 @@
 pkgname=archcosta-skeleton
 pkgver=1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Default user skeleton configs for ArchCosta (XFCE4)"
 arch=('any')
 depends=('materia-gtk-theme' 'papirus-icon-theme')
@@ -10,5 +10,6 @@ sha256sums=('SKIP')
 package() {
     cd "$srcdir/archcosta-skeleton"
     mkdir -p "$pkgdir/etc/skel"
-    cp -r skel/. "$pkgdir/etc/skel/"
+    # Copy everything EXCEPT .bashrc which is handled by airootfs to avoid conflict with bash package
+    cp -r skel/.config "$pkgdir/etc/skel/"
 }
