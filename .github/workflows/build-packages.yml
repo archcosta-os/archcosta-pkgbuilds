@@ -1,0 +1,43 @@
+name: Build and Publish Packages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup build environment
+        run: |
+          pacman -Syu --noconfirm base-devel git
+          # Add CachyOS repos
+          # Add ArchCosta repo key
+
+      - name: Build all packages
+        run: |
+          for pkg in archcosta-settings archcosta-skeleton archcosta-artwork brave-bin; do
+            if [ -d "$pkg" ]; then
+              cd "$pkg"
+              makepkg -sc --noconfirm || true
+              cd ..
+            fi
+          done
+
+      - name: Create pacman repo database
+        run: |
+          mkdir -p repo/
+          cp */*.pkg.tar.zst repo/ || true
+          repo-add repo/archcosta.db.tar.gz repo/*.pkg.tar.zst || true
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./repo

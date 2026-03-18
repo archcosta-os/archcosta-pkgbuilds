@@ -1,0 +1,13 @@
+pkgname=archcosta-skeleton
+pkgver=1.0
+pkgrel=1
+pkgdesc="Default user skeleton configs for ArchCosta (XFCE4)"
+arch=('any')
+depends=('xfce4' 'matcha-gtk-theme' 'papirus-icon-theme')
+source=("git+https://github.com/archcosta-os/archcosta-skeleton.git")
+sha256sums=('SKIP')
+
+package() {
+    mkdir -p "$pkgdir/etc/skel"
+    cp -r "$srcdir/archcosta-skeleton/skel/"* "$pkgdir/etc/skel/"
+}

@@ -1,0 +1,15 @@
+# Mirror of AUR brave-bin - pinned to known-good version
+pkgname=brave-bin
+pkgver=1.75.180
+pkgrel=1
+pkgdesc="Web browser that blocks ads and trackers by default (binary release)"
+arch=('x86_64')
+url="https://brave.com"
+license=('MPL2')
+depends=('gtk3' 'nss' 'alsa-lib')
+source=("https://github.com/brave/brave-browser/releases/download/v${pkgver}/brave-browser_${pkgver}_amd64.deb")
+sha256sums=('SKIP')
+
+package() {
+    tar xf data.tar.xz -C "$pkgdir"
+}
