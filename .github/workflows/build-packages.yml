@@ -18,17 +18,22 @@ jobs:
 
       - name: Setup build environment
         run: |
+          # Initialize keyring first
+          pacman-key --init
+          pacman-key --populate archlinux
+          
+          # Install base-devel, git, and curl from official repos
           pacman -Syu --noconfirm base-devel git curl
           
-          # Add CachyOS repos for dependencies
+          # Add CachyOS repos for dependencies with SigLevel = Never to avoid GPG prompts in CI
+          echo "" >> /etc/pacman.conf
           echo "[cachyos]" >> /etc/pacman.conf
-          echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
+          echo "SigLevel = Never" >> /etc/pacman.conf
           echo "Server = https://mirror.cachyos.org/repo/x86_64/cachyos" >> /etc/pacman.conf
           
           pacman -Sy
           
           # Pre-install all known dependencies for our packages as root
-          # This avoids sudo issues inside makepkg
           pacman -S --noconfirm xfce4 matcha-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject
 
       - name: Build all packages
@@ -36,7 +41,6 @@ jobs:
           useradd -m build
           chown -R build:build .
           
-          # We use a loop but handle each package carefully
           for pkg in archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome brave-bin; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
