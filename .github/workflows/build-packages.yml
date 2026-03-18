@@ -18,24 +18,31 @@ jobs:
 
       - name: Setup build environment
         run: |
-          pacman -Syu --noconfirm base-devel git
+          pacman -Syu --noconfirm base-devel git curl
+          
           # Add CachyOS repos for dependencies
           echo "[cachyos]" >> /etc/pacman.conf
           echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
-          echo "Server = https://mirror.cachyos.org/repo/\$arch/\$repo" >> /etc/pacman.conf
+          echo "Server = https://mirror.cachyos.org/repo/x86_64/cachyos" >> /etc/pacman.conf
+          
+          pacman -Sy
+          
+          # Pre-install all known dependencies for our packages as root
+          # This avoids sudo issues inside makepkg
+          pacman -S --noconfirm xfce4 matcha-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject
 
       - name: Build all packages
         run: |
-          # We need to allow root to run makepkg for this environment, but it's not ideal.
-          # Alternatively, create a user 'build'
           useradd -m build
           chown -R build:build .
           
+          # We use a loop but handle each package carefully
           for pkg in archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome brave-bin; do
             if [ -d "$pkg" ]; then
+              echo "Building $pkg..."
               cd "$pkg"
-              # As build user
-              su build -c "makepkg -sc --noconfirm" || true
+              # Use --nodeps because we installed them above as root
+              su build -c "makepkg -sc --noconfirm --nodeps" || echo "Failed to build $pkg"
               cd ..
             fi
           done
@@ -45,10 +52,14 @@ jobs:
           mkdir -p repo/
           cp */*.pkg.tar.zst repo/ || true
           cd repo
-          repo-add archcosta.db.tar.gz *.pkg.tar.zst
-          # Symlink db and files so pacman can find them
-          ln -sf archcosta.db.tar.gz archcosta.db
-          ln -sf archcosta.files.tar.gz archcosta.files
+          if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
+            repo-add archcosta.db.tar.gz *.pkg.tar.zst
+            ln -sf archcosta.db.tar.gz archcosta.db
+            ln -sf archcosta.files.tar.gz archcosta.files
+          else
+            echo "No packages found to add to repo!"
+            exit 1
+          fi
           cd ..
 
       - name: Deploy to GitHub Pages
