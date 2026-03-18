@@ -1,0 +1,16 @@
+pkgname=archcosta-welcome
+pkgver=1.0
+pkgrel=1
+pkgdesc="Welcome application for ArchCosta OS"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-welcome"
+license=('GPL3')
+depends=('python' 'python-gobject' 'gtk3')
+source=("git+https://github.com/archcosta-os/archcosta-welcome.git")
+sha256sums=('SKIP')
+
+package() {
+    cd "$srcdir/archcosta-welcome"
+    install -Dm755 usr/bin/archcosta-welcome \
+        "$pkgdir/usr/bin/archcosta-welcome"
+}

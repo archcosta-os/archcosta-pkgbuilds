@@ -18,14 +18,11 @@ jobs:
 
       - name: Setup build environment
         run: |
-          # Initialize keyring first
           pacman-key --init
           pacman-key --populate archlinux
-          
-          # Install base-devel, git, and curl from official repos
           pacman -Syu --noconfirm base-devel git curl
           
-          # Add CachyOS repos for dependencies with SigLevel = Never to avoid GPG prompts in CI
+          # Add CachyOS repos for dependencies
           echo "" >> /etc/pacman.conf
           echo "[cachyos]" >> /etc/pacman.conf
           echo "SigLevel = Never" >> /etc/pacman.conf
@@ -33,8 +30,7 @@ jobs:
           
           pacman -Sy
           
-          # Pre-install base dependencies that ARE in official repos
-          # Switched to materia-gtk-theme as it is confirmed in extra
+          # Pre-install dependencies
           pacman -S --noconfirm xfce4 materia-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject
 
       - name: Build all packages
@@ -42,11 +38,11 @@ jobs:
           useradd -m build
           chown -R build:build .
           
-          for pkg in archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome brave-bin; do
+          # Build order matters if some depend on others (but currently they don't)
+          for pkg in archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
-              # Use --nodeps to bypass missing AUR dependencies during build
               su build -c "makepkg -sc --noconfirm --nodeps" || echo "Failed to build $pkg"
               cd ..
             fi
@@ -59,6 +55,7 @@ jobs:
           cd repo
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
             repo-add archcosta.db.tar.gz *.pkg.tar.zst
+            # Ensure correct symlinks for pacman
             ln -sf archcosta.db.tar.gz archcosta.db
             ln -sf archcosta.files.tar.gz archcosta.files
           else

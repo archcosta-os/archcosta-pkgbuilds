@@ -1,0 +1,15 @@
+pkgname=archcosta-xfce-config
+pkgver=1.0
+pkgrel=1
+pkgdesc="XFCE4 panel and desktop configurations for ArchCosta"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-xfce-config"
+license=('GPL3')
+source=("git+https://github.com/archcosta-os/archcosta-xfce-config.git")
+sha256sums=('SKIP')
+
+package() {
+    cd "$srcdir/archcosta-xfce-config"
+    mkdir -p "$pkgdir/etc/skel"
+    cp -r etc/skel/. "$pkgdir/etc/skel/"
+}
