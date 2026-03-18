@@ -33,8 +33,9 @@ jobs:
           
           pacman -Sy
           
-          # Pre-install all known dependencies for our packages as root
-          pacman -S --noconfirm xfce4 matcha-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject
+          # Pre-install base dependencies that ARE in official repos
+          # Removed matcha-gtk-theme as it is AUR only
+          pacman -S --noconfirm xfce4 arc-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject
 
       - name: Build all packages
         run: |
@@ -45,7 +46,7 @@ jobs:
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
-              # Use --nodeps because we installed them above as root
+              # Use --nodeps to bypass missing AUR dependencies during build
               su build -c "makepkg -sc --noconfirm --nodeps" || echo "Failed to build $pkg"
               cd ..
             fi
