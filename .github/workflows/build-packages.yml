@@ -34,8 +34,8 @@ jobs:
           pacman -Sy
           
           # Pre-install base dependencies that ARE in official repos
-          # Removed matcha-gtk-theme as it is AUR only
-          pacman -S --noconfirm xfce4 arc-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject
+          # Switched to materia-gtk-theme as it is confirmed in extra
+          pacman -S --noconfirm xfce4 materia-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject
 
       - name: Build all packages
         run: |
