@@ -1,0 +1,13 @@
+pkgname=archcosta-calamares
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta branding and settings for Calamares"
+arch=('any')
+source=("git+https://github.com/archcosta-os/archcosta-calamares.git")
+sha256sums=('SKIP')
+
+package() {
+    cd "$srcdir/archcosta-calamares"
+    mkdir -p "$pkgdir/etc/calamares"
+    cp -r etc/calamares/. "$pkgdir/etc/calamares/"
+}

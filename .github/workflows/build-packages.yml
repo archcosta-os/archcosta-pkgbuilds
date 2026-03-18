@@ -38,8 +38,7 @@ jobs:
           useradd -m build
           chown -R build:build .
           
-          # Build order matters if some depend on others (but currently they don't)
-          for pkg in archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome; do
+          for pkg in archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-calamares archcosta-wiki; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
@@ -55,7 +54,6 @@ jobs:
           cd repo
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
             repo-add archcosta.db.tar.gz *.pkg.tar.zst
-            # Ensure correct symlinks for pacman
             ln -sf archcosta.db.tar.gz archcosta.db
             ln -sf archcosta.files.tar.gz archcosta.files
           else
