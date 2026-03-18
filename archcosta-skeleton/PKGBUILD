@@ -1,9 +1,9 @@
 pkgname=archcosta-skeleton
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Default user skeleton configs for ArchCosta (XFCE4)"
 arch=('any')
-depends=('xfce4' 'materia-gtk-theme' 'papirus-icon-theme')
+depends=('materia-gtk-theme' 'papirus-icon-theme')
 source=("git+https://github.com/archcosta-os/archcosta-skeleton.git")
 sha256sums=('SKIP')
 
