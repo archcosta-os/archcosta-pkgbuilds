@@ -19,15 +19,23 @@ jobs:
       - name: Setup build environment
         run: |
           pacman -Syu --noconfirm base-devel git
-          # Add CachyOS repos
-          # Add ArchCosta repo key
+          # Add CachyOS repos for dependencies
+          echo "[cachyos]" >> /etc/pacman.conf
+          echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
+          echo "Server = https://mirror.cachyos.org/repo/\$arch/\$repo" >> /etc/pacman.conf
 
       - name: Build all packages
         run: |
-          for pkg in archcosta-settings archcosta-skeleton archcosta-artwork brave-bin; do
+          # We need to allow root to run makepkg for this environment, but it's not ideal.
+          # Alternatively, create a user 'build'
+          useradd -m build
+          chown -R build:build .
+          
+          for pkg in archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome brave-bin; do
             if [ -d "$pkg" ]; then
               cd "$pkg"
-              makepkg -sc --noconfirm || true
+              # As build user
+              su build -c "makepkg -sc --noconfirm" || true
               cd ..
             fi
           done
@@ -36,7 +44,12 @@ jobs:
         run: |
           mkdir -p repo/
           cp */*.pkg.tar.zst repo/ || true
-          repo-add repo/archcosta.db.tar.gz repo/*.pkg.tar.zst || true
+          cd repo
+          repo-add archcosta.db.tar.gz *.pkg.tar.zst
+          # Symlink db and files so pacman can find them
+          ln -sf archcosta.db.tar.gz archcosta.db
+          ln -sf archcosta.files.tar.gz archcosta.files
+          cd ..
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
