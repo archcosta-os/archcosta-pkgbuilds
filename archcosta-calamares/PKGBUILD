@@ -1,14 +1,14 @@
 pkgname=archcosta-calamares
 pkgver=1.0
-pkgrel=6
+pkgrel=7
 pkgdesc="Calamares settings for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
-source=("etc")
-sha256sums=('SKIP')
+source=()
+sha256sums=()
 
 package() {
     mkdir -p "$pkgdir/etc/calamares"
-    cp -r "$srcdir/etc/calamares/." "$pkgdir/etc/calamares/"
+    cp -r "$startdir/etc/calamares/." "$pkgdir/etc/calamares/"
 }

@@ -1,14 +1,14 @@
 pkgname=archcosta-skeleton
 pkgver=1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="Default skeleton files for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
-source=("skel")
-sha256sums=('SKIP')
+source=()
+sha256sums=()
 
 package() {
     mkdir -p "$pkgdir/etc/skel"
-    cp -r "$srcdir/skel/." "$pkgdir/etc/skel/"
+    cp -r "$startdir/skel/." "$pkgdir/etc/skel/"
 }
