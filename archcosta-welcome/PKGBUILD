@@ -1,16 +1,15 @@
 pkgname=archcosta-welcome
 pkgver=1.0
-pkgrel=1
-pkgdesc="Welcome application for ArchCosta OS"
+pkgrel=5
+pkgdesc="Welcome application for ArchCosta"
 arch=('any')
-url="https://github.com/archcosta-os/archcosta-welcome"
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 depends=('python' 'python-gobject' 'gtk3')
-source=("git+https://github.com/archcosta-os/archcosta-welcome.git")
-sha256sums=('SKIP')
+source=()
+sha256sums=()
 
 package() {
-    cd "$srcdir/archcosta-welcome"
-    install -Dm755 usr/bin/archcosta-welcome \
-        "$pkgdir/usr/bin/archcosta-welcome"
+    mkdir -p "$pkgdir/usr"
+    cp -r "$startdir/usr/." "$pkgdir/usr/"
 }
