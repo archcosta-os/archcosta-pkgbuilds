@@ -1,7 +1,7 @@
 pkgname=archcosta-artwork
 pkgver=1.1
-pkgrel=10
-pkgdesc="Logos, wallpapers, plymouth and grub themes for ArchCosta"
+pkgrel=11
+pkgdesc="Logos, wallpapers and grub themes for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
@@ -9,15 +9,6 @@ source=()
 sha256sums=()
 
 package() {
-    # Logos
-    install -Dm644 "$startdir/src/logo/archcosta-logo.png" \
-        "$pkgdir/usr/share/pixmaps/archcosta-logo.png"
-    
-    # Plymouth
-    mkdir -p "$pkgdir/usr/share/plymouth/themes/archcosta"
-    cp -r "$startdir/src/plymouth/archcosta/." \
-        "$pkgdir/usr/share/plymouth/themes/archcosta/"
-        
     # Grub Theme
     mkdir -p "$pkgdir/usr/share/grub/themes/archcosta"
     cp -r "$startdir/src/grub/archcosta-grub-theme/." \
