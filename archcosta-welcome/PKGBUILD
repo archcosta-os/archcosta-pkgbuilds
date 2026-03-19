@@ -1,15 +1,15 @@
 pkgname=archcosta-welcome
 pkgver=1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Welcome application for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 depends=('python' 'python-gobject' 'gtk3')
-source=()
-sha256sums=()
+source=("usr")
+sha256sums=('SKIP')
 
 package() {
     mkdir -p "$pkgdir/usr"
-    cp -r "$startdir/usr/." "$pkgdir/usr/"
+    cp -r "$srcdir/usr/." "$pkgdir/usr/"
 }
