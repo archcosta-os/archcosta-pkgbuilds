@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Run ArchCosta hooks related commands.
+
+Lsb_release() {
+    local file=/etc/ls-release
+    local quote='\"'
+
+    if [ -z "$(grep "^DISTRIB_CODENAME=" $file 2>/dev/null)" ] ; then
+        echo "DISTRIB_CODENAME=${quote}rolling${quote}" >> $file
+    fi
+    sed -i $file \
+        -e "s|^DISTRIB_ID=.*|DISTRIB_ID=${quote}ArchCosta${quote}|" \
+        -e "s|^DISTRIB_CODENAME=.*|DISTRIB_CODENAME=${quote}rolling${quote}|" \
+        -e "s|^DISTRIB_DESCRIPTION=.*|DISTRIB_DESCRIPTION=${quote}ArchCosta Linux${quote}|" \
+        -e "s|^DISTRIB_RELEASE=\"\(.*\)\"|DISTRIB_RELEASE=${quote}\1${quote}|"
+}
+
+Os_release() {
+    local file=/usr/lib/os-release
+    local archcostafile=/usr/lib/archcosta-release
+    local quote='\"'
+
+    local home=https://archcosta-os.github.io
+    local doc=https://github.com/archcosta-os/archcosta-wiki
+    local support=https://github.com/archcosta-os/archcosta/issues
+    local bugs=https://github.com/archcosta-os/archcosta/issues
+
+    sed -i $file \
+        -e "s|^NAME=.*|NAME=${quote}ArchCosta${quote}|" \
+        -e "s|^PRETTY_NAME=.*|PRETTY_NAME=${quote}ArchCosta Linux${quote}|" \
+        -e "s|^HOME_URL=.*|HOME_URL=${quote}$home${quote}|" \
+        -e "s|^DOCUMENTATION_URL=.*|DOCUMENTATION_URL=${quote}$doc${quote}|" \
+        -e "s|^SUPPORT_URL=.*|SUPPORT_URL=${quote}$support${quote}|" \
+        -e "s|^BUG_REPORT_URL=.*|BUG_REPORT_URL=${quote}$bugs${quote}|" \
+        -e "s|^LOGO=.*|LOGO=${quote}archcosta-logo${quote}|" \
+        -e "s|^ID=.*|ID=${quote}archcosta${quote}|" \
+        -e "s|^ID_LIKE=.*|ID_LIKE=${quote}arch${quote}|"
+
+    if [ -z "$(grep "^ID_LIKE=" $file)" ] ; then
+        sed -i $file -e "/^ID=/a \ID_LIKE=${quote}arch${quote}"
+    fi
+}
+
+Issues() {
+    sed -i 's|Arch Linux|ArchCosta Linux|g' /etc/issue /usr/share/factory/etc/issue 2>/dev/null
+}
+
+Main()
+{
+    local hookname="$1"
+    case "$hookname" in
+        os-release)  Os_release ;;
+        lsb-release) Lsb_release ;;
+        issue)       Issues ;;
+        "")          Os_release
+                     Lsb_release
+                     Issues
+                     ;;
+    esac
+}
+
+Main "$@"

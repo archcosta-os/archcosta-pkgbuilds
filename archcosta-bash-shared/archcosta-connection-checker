@@ -1,0 +1,3 @@
+#!/bin/bash
+# ArchCosta Connection Checker
+ping -c 1 8.8.8.8 >/dev/null 2>&1 || ping -c 1 archlinux.org >/dev/null 2>&1

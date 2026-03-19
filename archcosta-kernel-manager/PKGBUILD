@@ -1,0 +1,16 @@
+pkgname=archcosta-kernel-manager
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta kernel management tool"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+depends=('archcosta-bash-shared' 'yad' 'expac' 'pacman')
+source=("archcosta-kernel-manager"
+        "archcosta-kernel-manager.desktop")
+sha256sums=('SKIP' 'SKIP')
+
+package() {
+    install -Dm755 archcosta-kernel-manager "$pkgdir/usr/bin/archcosta-kernel-manager"
+    install -Dm644 archcosta-kernel-manager.desktop "$pkgdir/usr/share/applications/archcosta-kernel-manager.desktop"
+}

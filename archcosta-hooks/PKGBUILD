@@ -1,0 +1,26 @@
+pkgname=archcosta-hooks
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta pacman hooks for system branding"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+depends=('bash' 'sed' 'grep' 'coreutils')
+source=("archcosta-hooks-runner"
+        "25-archcosta-os-release.hook"
+        "archcosta-lsb-release.hook"
+        "archcosta-hooks.hook"
+        "os-release-archcosta"
+        "lsb-release-archcosta")
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
+
+package() {
+    install -Dm755 archcosta-hooks-runner "$pkgdir/usr/bin/archcosta-hooks-runner"
+    
+    install -Dm644 25-archcosta-os-release.hook "$pkgdir/usr/share/libalpm/hooks/25-archcosta-os-release.hook"
+    install -Dm644 archcosta-lsb-release.hook "$pkgdir/usr/share/libalpm/hooks/archcosta-lsb-release.hook"
+    install -Dm644 archcosta-hooks.hook "$pkgdir/usr/share/libalpm/hooks/archcosta-hooks.hook"
+    
+    install -Dm644 os-release-archcosta "$pkgdir/usr/lib/archcosta-release"
+    install -Dm644 lsb-release-archcosta "$pkgdir/usr/lib/archcosta-lsb-release"
+}

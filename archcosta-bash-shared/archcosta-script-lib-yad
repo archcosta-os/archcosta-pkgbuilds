@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# ArchCosta YAD library
+
+archcosta_yad() {
+    yad --window-icon="/usr/share/pixmaps/archcosta-logo.svg" "$@"
+}
+
+RunInTerminal() {
+    local cmd="$1"
+    local title="${2:-ArchCosta Terminal}"
+    xfce4-terminal --title="$title" -e "bash -c '$cmd; echo; echo Press Enter to close...; read'"
+}
+
+archcosta_yad_check_internet_connection() {
+    archcosta-connection-checker
+}
+
+AssignIconVariables_in_archcosta_bash_shared() {
+    export ICO_INFO="info"
+    export ICO_ERROR="error"
+    export ICO_WARNING="warning"
+    export ICO_QUESTION="question"
+}
+
+eos_assert_deps() {
+    # Compatibility shim for EOS scripts
+    :
+}
+
+eos_running_kernel() {
+    uname -r
+}

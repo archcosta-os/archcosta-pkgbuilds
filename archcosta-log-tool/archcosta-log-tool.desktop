@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ArchCosta Log Tool
+Comment=Gather and share system logs
+Exec=archcosta-log-tool
+Icon=archcosta-logo
+Terminal=false
+Categories=System;

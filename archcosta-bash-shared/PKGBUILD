@@ -1,0 +1,18 @@
+pkgname=archcosta-bash-shared
+pkgver=1.0
+pkgrel=1
+pkgdesc="Shared bash functions and resources for ArchCosta tools"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+depends=('yad' 'curl' 'pacman-contrib' 'coreutils' 'grep' 'sed' 'bash')
+source=("archcosta-script-lib-yad"
+        "archcosta-connection-checker"
+        "archcosta-sendlog")
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+package() {
+    install -Dm644 archcosta-script-lib-yad "$pkgdir/usr/share/archcosta/scripts/archcosta-script-lib-yad"
+    install -Dm755 archcosta-connection-checker "$pkgdir/usr/bin/archcosta-connection-checker"
+    install -Dm755 archcosta-sendlog "$pkgdir/usr/bin/archcosta-sendlog"
+}

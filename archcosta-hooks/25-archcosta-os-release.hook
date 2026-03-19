@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = filesystem
+
+[Action]
+Description = Update ArchCosta os-release
+When = PostTransaction
+Exec = /usr/bin/archcosta-hooks-runner os-release
