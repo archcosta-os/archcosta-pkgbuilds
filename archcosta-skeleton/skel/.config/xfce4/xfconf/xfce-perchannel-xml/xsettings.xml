@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xsettings" version="1.0">
+  <property name="Net/ThemeName" type="string" value="Materia-dark"/>
+  <property name="Net/IconThemeName" type="string" value="Papirus-Dark"/>
+  <property name="Gtk/CursorThemeName" type="string" value="Breeze"/>
+  <property name="Gtk/FontName" type="string" value="Noto Sans 10"/>
+  <property name="Gtk/MonospaceFontName" type="string" value="JetBrains Mono 10"/>
+  <property name="Xft/Antialias" type="int" value="1"/>
+  <property name="Xft/Hinting" type="int" value="1"/>
+  <property name="Xft/HintStyle" type="string" value="hintslight"/>
+  <property name="Xft/RGBA" type="string" value="rgb"/>
+</channel>

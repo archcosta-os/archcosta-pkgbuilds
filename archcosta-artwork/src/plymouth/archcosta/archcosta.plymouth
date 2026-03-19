@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=ArchCosta
+Description=ArchCosta OS Boot Animation
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/archcosta
+ScriptFile=/usr/share/plymouth/themes/archcosta/archcosta.script

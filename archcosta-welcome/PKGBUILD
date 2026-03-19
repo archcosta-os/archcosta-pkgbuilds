@@ -1,6 +1,6 @@
 pkgname=archcosta-welcome
 pkgver=1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="Welcome application for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
@@ -11,5 +11,5 @@ sha256sums=()
 
 package() {
     mkdir -p "$pkgdir/usr"
-    cp -r "$startdir/usr/." "$pkgdir/usr/"
+    cp -r "$srcdir/../usr/." "$pkgdir/usr/"
 }
