@@ -1,0 +1,13 @@
+pkgname=archcosta-wiki
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta Documentation"
+arch=('any')
+source=("git+https://github.com/archcosta-os/archcosta-wiki.git")
+sha256sums=('SKIP')
+
+package() {
+    cd "$srcdir/archcosta-wiki"
+    mkdir -p "$pkgdir/usr/share/doc/archcosta"
+    install -Dm644 README.md "$pkgdir/usr/share/doc/archcosta/README.md"
+}

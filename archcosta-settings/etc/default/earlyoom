@@ -1,0 +1,1 @@
+EARLYOOM_ARGS="-r 60 -m 4 -s 4 --avoid '(Xorg|xfwm4|xfdesktop)'"

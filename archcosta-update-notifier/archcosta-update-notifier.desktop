@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ArchCosta Update Notifier
+Comment=Check for system updates
+Exec=archcosta-update-notifier
+Icon=archcosta-logo
+Terminal=false
+Categories=System;

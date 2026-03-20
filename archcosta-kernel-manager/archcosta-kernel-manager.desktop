@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ArchCosta Kernel Manager
+Comment=Manage Linux kernels
+Exec=archcosta-kernel-manager
+Icon=archcosta-logo
+Terminal=false
+Categories=System;
