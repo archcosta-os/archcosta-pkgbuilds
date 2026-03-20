@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=ArchCosta Lite Mode Checker
-Exec=/usr/lib/archcosta/lite-mode
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true

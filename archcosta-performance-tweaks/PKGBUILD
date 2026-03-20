@@ -1,0 +1,24 @@
+pkgname=archcosta-performance-tweaks
+pkgver=1.0
+pkgrel=1
+pkgdesc="Performance optimizations and system tweaks for ArchCosta"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+depends=('zram-generator' 'ananicy-cpp')
+source=()
+sha256sums=()
+
+package() {
+    # Install sysctl tweaks
+    install -Dm644 "$srcdir/../etc/sysctl.d/90-archcosta-performance.conf" \
+        "$pkgdir/etc/sysctl.d/90-archcosta-performance.conf"
+
+    # Install udev rules
+    install -Dm644 "$srcdir/../etc/udev/rules.d/90-archcosta-io.rules" \
+        "$pkgdir/etc/udev/rules.d/90-archcosta-io.rules"
+
+    # Install ZRAM config
+    install -Dm644 "$srcdir/../usr/lib/systemd/zram-generator.conf.d/archcosta-zram.conf" \
+        "$pkgdir/usr/lib/systemd/zram-generator.conf.d/archcosta-zram.conf"
+}

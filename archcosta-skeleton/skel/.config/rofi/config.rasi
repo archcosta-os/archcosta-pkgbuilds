@@ -1,9 +1,0 @@
-configuration {
-    modi: "drun,run,window";
-    font: "JetBrains Mono 10";
-    show-icons: true;
-    display-drun: "Apps";
-    drun-display-format: "{name}";
-}
-
-@theme "/usr/share/rofi/themes/sidebar.rasi"

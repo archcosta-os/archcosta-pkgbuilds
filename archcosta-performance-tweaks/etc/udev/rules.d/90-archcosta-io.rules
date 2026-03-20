@@ -1,0 +1,10 @@
+# ArchCosta I/O Scheduler Rules
+
+# Set mq-deadline for NVMe
+ACTION=="add|change", KERNEL=="nvme*", ATTR{queue/scheduler}="mq-deadline"
+
+# Set bfq for HDD
+ACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+
+# Set kyber for SSD
+ACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="kyber"

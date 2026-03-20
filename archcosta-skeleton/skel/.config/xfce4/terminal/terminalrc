@@ -1,7 +1,0 @@
-[Configuration]
-ColorForeground=#d0d0d0
-ColorBackground=#1a1a2e
-ColorCursor=#00b0a0
-ColorPalette=#1a1a2e;#e06c75;#98c379;#d19a66;#61afef;#c678dd;#56b6c2;#abb2bf;#5c6370;#e06c75;#98c379;#d19a66;#61afef;#c678dd;#56b6c2;#ffffff
-FontName=JetBrains Mono 11
-MiscDefaultGeometry=100x28
