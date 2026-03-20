@@ -1,8 +1,8 @@
 NAME="ArchCosta"
-PRETTY_NAME="ArchCosta Linux Spark"
+PRETTY_NAME="ArchCosta Linux"
 ID=archcosta
 ID_LIKE=arch
-BUILD_ID=spark
+BUILD_ID=rolling
 ANSI_COLOR="38;2;23;147;209"
 HOME_URL="https://archcosta-os.github.io"
 DOCUMENTATION_URL="https://github.com/archcosta-os/archcosta-wiki"

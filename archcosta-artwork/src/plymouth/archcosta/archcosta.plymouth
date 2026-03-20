@@ -1,6 +1,6 @@
 [Plymouth Theme]
-Name=ArchCosta Spark
-Description=A beautiful minimalist boot animation for ArchCosta Spark
+Name=ArchCosta
+Description=A beautiful minimalist boot animation for ArchCosta Linux
 ModuleName=script
 
 [script]
