@@ -38,7 +38,7 @@ jobs:
           useradd -m build
           chown -R build:build .
           
-          for pkg in archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-calamares archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager; do
+          for pkg in brave-bin archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-calamares archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"

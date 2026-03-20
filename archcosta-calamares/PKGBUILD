@@ -1,14 +1,31 @@
+# Maintainer: ArchCosta Team
 pkgname=archcosta-calamares
-pkgver=1.0
-pkgrel=8
-pkgdesc="Calamares settings for ArchCosta"
-arch=('any')
-url="https://github.com/archcosta-os/archcosta-pkgbuilds"
-license=('GPL3')
-source=()
-sha256sums=()
+pkgver=3.4.1
+pkgrel=2
+pkgdesc='Branded Calamares installer for ArchCosta Linux'
+arch=('x86_64')
+license=(GPL-3.0-or-later)
+url="https://github.com/CachyOS/cachyos-calamares"
+conflicts=('calamares')
+provides=('calamares')
+depends=(boost-libs ckbcomp cryptsetup dmidecode gptfdisk hwinfo kconfig kcoreaddons kcrash ki18n kparts kpmcore kservice kwidgetsaddons libpwquality mkinitcpio-openswap networkmanager polkit-qt6 python qt6-declarative qt6-svg rsync solid squashfs-tools upower yaml-cpp qt6-imageformats)
+makedepends=(boost cmake doxygen extra-cmake-modules git ninja python-jsonschema python-pyaml python-unidecode qt6-tools)
+source=(calamares::"git+${url}.git#branch=cachyos")
+sha256sums=('SKIP')
+
+build() {
+    cd "${srcdir}/calamares"
+    cmake -S . -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DWITH_QT6=ON
+    cmake --build build
+}
 
 package() {
-    mkdir -p "$pkgdir/etc/calamares"
-    cp -r "$srcdir/../etc/calamares/." "$pkgdir/etc/calamares/"
+    cd "${srcdir}/calamares/build"
+    DESTDIR="${pkgdir}" cmake --build . --target install
+    
+    # Rebrand
+    find "$pkgdir" -type f -exec sed -i 's/CachyOS/ArchCosta/g' {} + 2>/dev/null
+    find "$pkgdir" -type f -exec sed -i 's/cachyos/archcosta/g' {} + 2>/dev/null
+    
+    rm -rf "$pkgdir/usr/share/applications"
 }

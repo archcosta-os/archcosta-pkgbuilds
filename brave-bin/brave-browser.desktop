@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Brave Web Browser
+Comment=Access the Internet
+Exec=brave %U
+Terminal=false
+Type=Application
+Icon=brave-desktop
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
+StartupWMClass=brave-browser
