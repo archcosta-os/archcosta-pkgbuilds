@@ -1,6 +1,6 @@
 [Plymouth Theme]
 Name=ArchCosta
-Description=A beautiful minimalist boot animation for ArchCosta Linux
+Description=A beautiful minimalist boot animation for ArchCosta
 ModuleName=script
 
 [script]
