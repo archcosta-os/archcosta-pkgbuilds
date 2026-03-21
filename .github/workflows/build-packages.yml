@@ -59,10 +59,10 @@ jobs:
         run: |
           mkdir -p repo/
           
-          # Merge with existing DB from GitLab/previous runs
-          curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
+          # Force a fresh database to fix the 'illegal filename' corruption
+          # curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
           
-          cp built-packages/*.pkg.tar.zst repo/
+          cp built-packages/*.pkg.tar.zst repo/ || true
           cd repo
           
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
@@ -71,8 +71,6 @@ jobs:
             ln -sf archcosta.files.tar.gz archcosta.files
           fi
           
-          # CRITICAL: Delete packages > 95MB to avoid Git push failure
-          # The database will still contain their metadata
           find . -size +95M -delete
           cd ..
 
