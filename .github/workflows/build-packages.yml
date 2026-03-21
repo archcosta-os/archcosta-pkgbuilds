@@ -20,7 +20,7 @@ jobs:
         run: |
           pacman-key --init
           pacman-key --populate archlinux
-          pacman -Syu --noconfirm base-devel git curl xfce4 materia-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject libxss ttf-font-awesome
+          pacman -Syu --noconfirm base-devel git curl github-cli zip
           
           # Disable debug symbols to save space
           sed -i 's/debug/!debug/g' /etc/makepkg.conf
@@ -31,11 +31,15 @@ jobs:
           useradd -m build
           chown -R build:build .
           
-          for pkg in ckbcomp mkinitcpio-openswap archcosta-assistant archcosta-gamer archcosta-update archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager; do
+          mkdir -p built-packages
+          
+          # Build all local packages
+          for pkg in archcosta-assistant archcosta-gamer archcosta-update archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager ckbcomp mkinitcpio-openswap; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
               su build -c "makepkg -scf --noconfirm --nodeps" || echo "Failed to build $pkg"
+              mv *.pkg.tar.zst ../built-packages/ || true
               cd ..
             fi
           done
@@ -43,20 +47,20 @@ jobs:
       - name: Create pacman repo database
         run: |
           mkdir -p repo/
-          cp */*.pkg.tar.zst repo/ || true
+          cp built-packages/*.pkg.tar.zst repo/
           cd repo
+          
+          # Add packages to database
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
             repo-add archcosta.db.tar.gz *.pkg.tar.zst
             ln -sf archcosta.db.tar.gz archcosta.db
             ln -sf archcosta.files.tar.gz archcosta.files
-          else
-            echo "No packages found to add to repo!"
-            exit 1
           fi
           cd ..
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Database to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./repo
+          keep_files: false
