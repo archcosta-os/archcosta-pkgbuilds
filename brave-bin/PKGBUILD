@@ -17,7 +17,7 @@ source=("$pkgname.sh"
 sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 prepare() {
-  mkdir -p brave
+  [ -d brave ] || mkdir brave
   bsdtar -xf "${pkgname}-${pkgver}-x86_64.zip" -C brave
   chmod +x brave/brave
 }
