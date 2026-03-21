@@ -59,19 +59,18 @@ jobs:
         run: |
           mkdir -p repo/
           
-          # Force a fresh database to fix the 'illegal filename' corruption
+          # WIPE: Do not download old database. Start completely fresh.
           # curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
           
           cp built-packages/*.pkg.tar.zst repo/ || true
           cd repo
           
+          # Create a BRAND NEW database
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
             repo-add archcosta.db.tar.gz *.pkg.tar.zst
             ln -sf archcosta.db.tar.gz archcosta.db
             ln -sf archcosta.files.tar.gz archcosta.files
           fi
-          
-          find . -size +95M -delete
           cd ..
 
       - name: Deploy Database to GitHub Pages
@@ -79,4 +78,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./repo
-          keep_files: true
+          keep_files: false
