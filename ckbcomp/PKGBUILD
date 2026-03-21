@@ -1,0 +1,16 @@
+pkgname=ckbcomp
+pkgver=1.244
+pkgrel=1
+pkgdesc="Compile a XKB keyboard description to a keymap suitable for loadkeys or kbdcontrol"
+url="https://salsa.debian.org/installer-team/console-setup"
+license=('GPL-2.0-or-later')
+arch=('any')
+depends=('perl')
+makedepends=('git')
+source=("console-setup-$pkgver.tar.gz::$url/-/archive/$pkgver/console-setup-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  cd "console-setup-$pkgver"
+  install -Dm755 Keyboard/ckbcomp -t "$pkgdir/usr/bin/"
+}

@@ -1,0 +1,12 @@
+run_hook() {
+    ## This hook opens the encrypted swap device
+    if [ -f /openswap.conf ]; then
+        . /openswap.conf
+        if [ -b "/dev/disk/by-uuid/${swap_device_uuid}" ]; then
+            msg "::: Opening encrypted swap device..."
+            cryptsetup open --type luks "/dev/disk/by-uuid/${swap_device_uuid}" "${crypt_swap_name}" ${openswap_options}
+        else
+            error "::: Encrypted swap device UUID=${swap_device_uuid} not found!"
+        fi
+    fi
+}

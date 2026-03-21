@@ -1,0 +1,12 @@
+build() {
+    add_binary "cryptsetup"
+    add_file "/etc/openswap.conf" "/openswap.conf"
+    add_runscript
+}
+
+help() {
+    cat <<HELPEOF
+This hook allows you to open an encrypted swap partition before the resume 
+hook is executed. Required for hibernation with encrypted swap.
+HELPEOF
+}

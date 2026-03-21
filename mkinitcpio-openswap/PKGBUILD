@@ -1,0 +1,18 @@
+pkgname=mkinitcpio-openswap
+pkgver=0.1.0
+pkgrel=4
+pkgdesc="Script to open encrypted swap partition before resume"
+arch=('any')
+url="https://gitlab.manjaro.org/packages/extra/mkinitcpio-openswap"
+license=('GPL')
+depends=('mkinitcpio')
+source=("openswap.conf"
+        "openswap.hook"
+        "openswap.install")
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+package() {
+  install -D -m644 "$startdir/openswap.conf" "$pkgdir/etc/openswap.conf"
+  install -D -m644 "$startdir/openswap.hook" "$pkgdir/usr/lib/initcpio/hooks/openswap"
+  install -D -m644 "$startdir/openswap.install" "$pkgdir/usr/lib/initcpio/install/openswap"
+}
