@@ -31,10 +31,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .ccache
-          key: ${{ runner.os }}-pkgbuild-${{ hashFiles('**/PKGBUILD') }}
+          key: ${{ runner.os }}-pkgbuild-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-pkgbuild-
-            ${{ runner.os }}-
 
       - name: Build all packages
         run: |
