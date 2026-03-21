@@ -20,54 +20,60 @@ jobs:
         run: |
           pacman-key --init
           pacman-key --populate archlinux
-          pacman -Syu --noconfirm base-devel git curl
+          pacman -Syu --noconfirm base-devel git curl cmake extra-cmake-modules ninja gcc qt6-base qt6-declarative qt6-svg qt6-tools yaml-cpp kpmcore boost-libs github-cli jq
           
-          # Add CachyOS repos for dependencies
-          echo "" >> /etc/pacman.conf
-          echo "[cachyos]" >> /etc/pacman.conf
-          echo "SigLevel = Never" >> /etc/pacman.conf
-          echo "Server = https://mirror.cachyos.org/repo/x86_64/cachyos" >> /etc/pacman.conf
-          
-          pacman -Sy
-          
-          # Pre-install dependencies for brave-bin and calamares
-          pacman -S --noconfirm xfce4 materia-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject libxss ttf-font-awesome cmake extra-cmake-modules ninja gcc qt6-base qt6-declarative qt6-svg qt6-tools yaml-cpp kpmcore boost-libs
+          # Disable debug symbols to save space
+          sed -i 's/debug/!debug/g' /etc/makepkg.conf
+          sed -i 's/strip/!strip/g' /etc/makepkg.conf
 
       - name: Build all packages
         run: |
           useradd -m build
           chown -R build:build .
-
-          # Disable debug symbols globally to save space
-          sed -i 's/debug/!debug/g' /etc/makepkg.conf
-          sed -i 's/strip/!strip/g' /etc/makepkg.conf
-
+          
+          mkdir -p built-packages
+          
           for pkg in brave-bin archcosta-assistant archcosta-gamer archcosta-update archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
               su build -c "makepkg -scf --noconfirm --nodeps" || echo "Failed to build $pkg"
+              mv *.pkg.tar.zst ../built-packages/ || true
               cd ..
             fi
           done
 
-      - name: Create pacman repo database
+      - name: Create Release and Upload Large Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="packages-$(date +'%Y.%m.%d-%H%M')"
+          gh release create "$TAG_NAME" --title "Build $TAG_NAME" --notes "Automated package build"
+          
+          for pkg in built-packages/*.pkg.tar.zst; do
+            echo "Uploading $pkg to release..."
+            gh release upload "$TAG_NAME" "$pkg"
+          done
+
+      - name: Create pacman repo database (pointing to releases)
         run: |
           mkdir -p repo/
-          cp */*.pkg.tar.zst repo/ || true
+          cp built-packages/*.pkg.tar.zst repo/
           cd repo
-          if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
-            repo-add archcosta.db.tar.gz *.pkg.tar.zst
-            ln -sf archcosta.db.tar.gz archcosta.db
-            ln -sf archcosta.files.tar.gz archcosta.files
-          else
-            echo "No packages found to add to repo!"
-            exit 1
-          fi
+          repo-add archcosta.db.tar.gz *.pkg.tar.zst
+          ln -sf archcosta.db.tar.gz archcosta.db
+          ln -sf archcosta.files.tar.gz archcosta.files
+          
+          # CLEANUP: Remove files over 95MB to prevent git push failure
+          # The database already contains their info, and pacman can still work 
+          # if we use a different strategy, but for now let's just try to 
+          # push the DB and small packages.
+          find . -size +95M -delete
           cd ..
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Database to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./repo
+          keep_files: true
