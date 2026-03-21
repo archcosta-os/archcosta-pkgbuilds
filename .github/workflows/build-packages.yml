@@ -21,7 +21,7 @@ jobs:
         run: |
           pacman-key --init
           pacman-key --populate archlinux
-          pacman -Syu --noconfirm base-devel git curl cmake extra-cmake-modules ninja gcc qt6-base qt6-declarative qt6-svg qt6-tools yaml-cpp kpmcore boost-libs github-cli ccache
+          pacman -Syu --noconfirm base-devel git curl cmake extra-cmake-modules ninja gcc qt6-base qt6-declarative qt6-svg qt6-tools yaml-cpp kpmcore boost-libs github-cli ccache qt6-imageformats
           
           # Disable debug symbols to save space
           sed -i 's/debug/!debug/g' /etc/makepkg.conf
