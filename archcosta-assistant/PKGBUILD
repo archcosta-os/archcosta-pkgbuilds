@@ -1,0 +1,15 @@
+pkgname=archcosta-assistant
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta System maintenance GUI"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-applications"
+license=('GPL3')
+depends=('archcosta-bash-shared' 'yad' 'pacman' 'reflector' 'mousepad')
+source=()
+sha256sums=()
+
+package() {
+    install -Dm755 "$startdir/archcosta-assistant" "$pkgdir/usr/bin/archcosta-assistant"
+    install -Dm644 "$startdir/archcosta-assistant.desktop" "$pkgdir/usr/share/applications/archcosta-assistant.desktop"
+}

@@ -1,0 +1,14 @@
+pkgname=archcosta-update
+pkgver=1.0
+pkgrel=1
+pkgdesc="A robust system update wrapper for ArchCosta"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-applications"
+license=('GPL3')
+depends=('bash' 'pacman' 'reflector')
+source=()
+sha256sums=()
+
+package() {
+    install -Dm755 "$startdir/archcosta-update" "$pkgdir/usr/bin/archcosta-update"
+}

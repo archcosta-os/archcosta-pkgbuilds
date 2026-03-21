@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# ArchCosta Assistant Tool
+# A lightweight GUI for system maintenance
+
+source /usr/share/archcosta/scripts/archcosta-script-lib-yad || exit 1
+
+Main() {
+    local choice=$(archcosta_yad --list --radiolist \
+        --column="Select" --column="Task" --column="Description" \
+        --title="ArchCosta Assistant" --width=600 --height=400 \
+        TRUE "Update System" "Update all packages and AUR" \
+        FALSE "Refresh Mirrors" "Find and set the fastest mirrors" \
+        FALSE "Clean Cache" "Remove old package files" \
+        FALSE "Fix GPG Keys" "Reset and refresh pacman keys" \
+        FALSE "Edit Pacman Conf" "Open pacman configuration" \
+        --button="Run":0 --button="Exit":1)
+
+    local retval=$?
+    if [ $retval -eq 0 ]; then
+        local task=$(echo "$choice" | cut -d'|' -f2)
+        case "$task" in
+            "Update System")
+                RunInTerminal "sudo pacman -Syu" "Updating System"
+                ;;
+            "Refresh Mirrors")
+                RunInTerminal "sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist" "Refreshing Mirrors"
+                ;;
+            "Clean Cache")
+                RunInTerminal "sudo pacman -Sc" "Cleaning Cache"
+                ;;
+            "Fix GPG Keys")
+                RunInTerminal "sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys" "Fixing GPG Keys"
+                ;;
+            "Edit Pacman Conf")
+                RunInTerminal "sudo mousepad /etc/pacman.conf" "Editing Config"
+                ;;
+        esac
+    fi
+}
+
+Main "$@"

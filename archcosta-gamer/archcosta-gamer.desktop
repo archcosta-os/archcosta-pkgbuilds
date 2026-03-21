@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ArchCosta Gamer
+Comment=Install gaming software and tools
+Exec=archcosta-gamer
+Icon=archcosta-logo
+Terminal=false
+Categories=System;Game;

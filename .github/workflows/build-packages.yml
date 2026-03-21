@@ -30,19 +30,19 @@ jobs:
           
           pacman -Sy
           
-          # Pre-install dependencies
-          pacman -S --noconfirm xfce4 materia-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject
+          # Pre-install dependencies for brave-bin and calamares
+          pacman -S --noconfirm xfce4 materia-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject libxss ttf-font-awesome
 
       - name: Build all packages
         run: |
           useradd -m build
           chown -R build:build .
           
-          for pkg in brave-bin archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-calamares archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager; do
+          for pkg in brave-bin archcosta-calamares archcosta-assistant archcosta-gamer archcosta-update archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
-              su build -c "makepkg -sc --noconfirm --nodeps" || echo "Failed to build $pkg"
+              su build -c "makepkg -scf --noconfirm --nodeps" || echo "Failed to build $pkg"
               cd ..
             fi
           done

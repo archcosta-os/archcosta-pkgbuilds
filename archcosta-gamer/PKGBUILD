@@ -1,0 +1,15 @@
+pkgname=archcosta-gamer
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta Gaming software installer GUI"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-applications"
+license=('GPL3')
+depends=('archcosta-bash-shared' 'yad' 'pacman')
+source=()
+sha256sums=()
+
+package() {
+    install -Dm755 "$startdir/archcosta-gamer" "$pkgdir/usr/bin/archcosta-gamer"
+    install -Dm644 "$startdir/archcosta-gamer.desktop" "$pkgdir/usr/share/applications/archcosta-gamer.desktop"
+}

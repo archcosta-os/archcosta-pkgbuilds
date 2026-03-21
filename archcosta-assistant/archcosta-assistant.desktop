@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ArchCosta Assistant
+Comment=System maintenance and configuration
+Exec=archcosta-assistant
+Icon=archcosta-logo
+Terminal=false
+Categories=System;

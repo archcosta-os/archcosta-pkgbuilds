@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# ArchCosta Gamer Tool
+# A lightweight GUI to install gaming-related software
+
+source /usr/share/archcosta/scripts/archcosta-script-lib-yad || exit 1
+
+LIST_FILE="/tmp/archcosta-gamer-list"
+
+# Define available software
+# Category|Name|Package|Description
+cat > "$LIST_FILE" <<EOF
+Launchers|Steam|steam|The ultimate gaming platform
+Launchers|Lutris|lutris|Open source gaming platform for Linux
+Launchers|Heroic|heroic-games-launcher-bin|Native GOG and Epic Games launcher
+Compatibility|Wine|wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-pulseaudio libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva libvdpau lib32-libvdpau vkd3d lib32-vkd3d libxkbcommon lib32-libxkbcommon|Windows compatibility layer (Staging)
+Compatibility|Proton-GE|proton-ge-custom-bin|GloriousEggroll's custom Proton build
+Tools|Gamemode|gamemode lib32-gamemode|Optimize system performance on the fly
+Tools|MangoHud|mangohud lib32-mangohud|Vulkan and OpenGL overlay for monitoring
+Emulators|RetroArch|retroarch|Multi-system emulator frontend
+Emulators|Dolphin|dolphin-emu|GameCube and Wii emulator
+Emulators|RPCS3|rpcs3-bin|PS3 emulator
+EOF
+
+Main() {
+    local selected=$(archcosta_yad --list --checklist --multiple \
+        --column="Select" --column="Category" --column="Name" --column="Package" --column="Description" \
+        --title="ArchCosta Gamer" --width=800 --height=500 \
+        --print-column=4 --separator=" " \
+        < "$LIST_FILE")
+
+    if [ -n "$selected" ]; then
+        RunInTerminal "sudo pacman -S --needed --noconfirm $selected" "Installing Gaming Software"
+    fi
+}
+
+Main "$@"
+rm -f "$LIST_FILE"
