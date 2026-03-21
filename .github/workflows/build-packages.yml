@@ -12,6 +12,7 @@ jobs:
       contents: write
     container:
       image: archlinux:latest
+      options: --privileged
 
     steps:
       - uses: actions/checkout@v4
@@ -20,21 +21,31 @@ jobs:
         run: |
           pacman-key --init
           pacman-key --populate archlinux
-          pacman -Syu --noconfirm base-devel git curl github-cli zip
+          pacman -Syu --noconfirm base-devel git curl cmake extra-cmake-modules ninja gcc qt6-base qt6-declarative qt6-svg qt6-tools yaml-cpp kpmcore boost-libs github-cli ccache
           
           # Disable debug symbols to save space
           sed -i 's/debug/!debug/g' /etc/makepkg.conf
           sed -i 's/strip/!strip/g' /etc/makepkg.conf
 
+      - name: CCache Config
+        run: |
+          echo "CCACHE_DIR=/github/home/.ccache" >> $GITHUB_ENV
+          mkdir -p /github/home/.ccache
+
       - name: Build all packages
         run: |
+          export PATH="/usr/lib/ccache/bin:$PATH"
+          export MAKEFLAGS="-j$(nproc)"
           useradd -m build
           chown -R build:build .
+          chown -R build:build /github/home/.ccache
           
           mkdir -p built-packages
           
-          # Build all local packages
-          for pkg in archcosta-assistant archcosta-gamer archcosta-update archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager ckbcomp mkinitcpio-openswap; do
+          # List of all 17 packages
+          PKGS=(archcosta-bash-shared archcosta-hooks ckbcomp mkinitcpio-openswap archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-calamares archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager archcosta-assistant archcosta-gamer archcosta-update)
+          
+          for pkg in "${PKGS[@]}"; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
@@ -48,19 +59,21 @@ jobs:
         run: |
           mkdir -p repo/
           
-          # 1. Download existing database from gh-pages to preserve external packages (Brave, etc.)
+          # Merge with existing DB from GitLab/previous runs
           curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
           
-          # 2. Copy newly built packages
-          cp built-packages/*.pkg.tar.zst repo/ || true
-          
+          cp built-packages/*.pkg.tar.zst repo/
           cd repo
-          # 3. Add ONLY the new packages to the EXISTING database
+          
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
             repo-add archcosta.db.tar.gz *.pkg.tar.zst
             ln -sf archcosta.db.tar.gz archcosta.db
             ln -sf archcosta.files.tar.gz archcosta.files
           fi
+          
+          # CRITICAL: Delete packages > 95MB to avoid Git push failure
+          # The database will still contain their metadata
+          find . -size +95M -delete
           cd ..
 
       - name: Deploy Database to GitHub Pages
@@ -68,4 +81,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./repo
-          keep_files: false
+          keep_files: true
