@@ -31,7 +31,7 @@ jobs:
           pacman -Sy
           
           # Pre-install dependencies for brave-bin and calamares
-          pacman -S --noconfirm xfce4 materia-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject libxss ttf-font-awesome cmake extra-cmake-modules ninja gcc
+          pacman -S --noconfirm xfce4 materia-gtk-theme papirus-icon-theme gtk3 nss alsa-lib python python-gobject libxss ttf-font-awesome cmake extra-cmake-modules ninja gcc qt6-base qt6-declarative qt6-svg qt6-tools yaml-cpp kpmcore boost-libs
 
       - name: Build all packages
         run: |
