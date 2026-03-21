@@ -1,0 +1,41 @@
+# Maintainer: ArchCosta Team
+pkgname=archcosta-installer
+pkgver=260308
+pkgrel=1
+pkgdesc="A modern, user-friendly graphical installation tool for ArchCosta Linux"
+arch=('any')
+url="https://github.com/Petexy/linexin-installer"
+license=('GPL3')
+depends=('python' 'python-gobject' 'gtk4' 'libadwaita' 'python-yaml' 'python-requests' 'parted' 'util-linux' 'grub' 'efibootmgr' 'networkmanager' 'polkit')
+makedepends=('git')
+source=("git+https://github.com/Petexy/linexin-installer.git")
+sha256sums=('SKIP')
+
+package() {
+  cd "$srcdir/linexin-installer"
+  
+  # Install the main application files
+  install -d "$pkgdir/usr/share/archcosta-installer"
+  cp -r src/* "$pkgdir/usr/share/archcosta-installer/"
+  
+  # Install the executable script
+  install -d "$pkgdir/usr/bin"
+  # We use a wrapper to handle branding and execution
+  cat << EOF > "$pkgdir/usr/bin/archcosta-installer"
+#!/bin/bash
+exec python /usr/share/archcosta-installer/main.py "\$@"
+EOF
+  chmod +x "$pkgdir/usr/bin/archcosta-installer"
+  
+  # Install desktop entry
+  install -d "$pkgdir/usr/share/applications"
+  if [ -f "linexin-installer.desktop" ]; then
+    cp "linexin-installer.desktop" "$pkgdir/usr/share/applications/archcosta-installer.desktop"
+    sed -i 's/Linexin/ArchCosta/g' "$pkgdir/usr/share/applications/archcosta-installer.desktop"
+    sed -i 's/linexin-installer/archcosta-installer/g' "$pkgdir/usr/share/applications/archcosta-installer.desktop"
+  fi
+  
+  # Global branding replacement in the source code
+  find "$pkgdir/usr/share/archcosta-installer" -type f -exec sed -i 's/Linexin/ArchCosta/g' {} + 2>/dev/null
+  find "$pkgdir/usr/share/archcosta-installer" -type f -exec sed -i 's/linexin/archcosta/g' {} + 2>/dev/null
+}
