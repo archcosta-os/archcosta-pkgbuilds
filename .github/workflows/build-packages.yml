@@ -47,10 +47,15 @@ jobs:
       - name: Create pacman repo database
         run: |
           mkdir -p repo/
-          cp built-packages/*.pkg.tar.zst repo/
-          cd repo
           
-          # Add packages to database
+          # 1. Download existing database from gh-pages to preserve external packages (Brave, etc.)
+          curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
+          
+          # 2. Copy newly built packages
+          cp built-packages/*.pkg.tar.zst repo/ || true
+          
+          cd repo
+          # 3. Add ONLY the new packages to the EXISTING database
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
             repo-add archcosta.db.tar.gz *.pkg.tar.zst
             ln -sf archcosta.db.tar.gz archcosta.db
