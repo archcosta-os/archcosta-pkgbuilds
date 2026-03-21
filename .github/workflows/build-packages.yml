@@ -43,9 +43,14 @@ jobs:
           
           mkdir -p "$CCACHE_DIR"
           useradd -m build
+          
+          # Fix permissions for the workspace and ccache dir
           chown -R build:build .
+          chown -R build:build "$CCACHE_DIR"
+          chmod -R 777 "$CCACHE_DIR"
           
           mkdir -p built-packages
+          chown -R build:build built-packages
           
           # List of all 17 packages
           PKGS=(archcosta-bash-shared archcosta-hooks ckbcomp mkinitcpio-openswap archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-calamares archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager archcosta-assistant archcosta-gamer archcosta-update)
