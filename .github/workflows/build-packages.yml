@@ -27,18 +27,24 @@ jobs:
           sed -i 's/debug/!debug/g' /etc/makepkg.conf
           sed -i 's/strip/!strip/g' /etc/makepkg.conf
 
-      - name: CCache Config
-        run: |
-          echo "CCACHE_DIR=/github/home/.ccache" >> $GITHUB_ENV
-          mkdir -p /github/home/.ccache
+      - name: Cache CCache
+        uses: actions/cache@v4
+        with:
+          path: .ccache
+          key: ${{ runner.os }}-pkgbuild-${{ hashFiles('**/PKGBUILD') }}
+          restore-keys: |
+            ${{ runner.os }}-pkgbuild-
+            ${{ runner.os }}-
 
       - name: Build all packages
         run: |
+          export CCACHE_DIR="${{ github.workspace }}/.ccache"
           export PATH="/usr/lib/ccache/bin:$PATH"
           export MAKEFLAGS="-j$(nproc)"
+          
+          mkdir -p "$CCACHE_DIR"
           useradd -m build
           chown -R build:build .
-          chown -R build:build /github/home/.ccache
           
           mkdir -p built-packages
           
