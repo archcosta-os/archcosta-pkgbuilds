@@ -37,8 +37,12 @@ jobs:
         run: |
           useradd -m build
           chown -R build:build .
-          
-          for pkg in brave-bin archcosta-calamares archcosta-assistant archcosta-gamer archcosta-update archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager; do
+
+          # Disable debug symbols globally to save space
+          sed -i 's/debug/!debug/g' /etc/makepkg.conf
+          sed -i 's/strip/!strip/g' /etc/makepkg.conf
+
+          for pkg in brave-bin archcosta-assistant archcosta-gamer archcosta-update archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager; do
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
