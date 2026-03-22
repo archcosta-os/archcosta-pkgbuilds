@@ -1,13 +1,17 @@
 pkgname=archcosta-artwork
 pkgver=1.1
-pkgrel=13
+pkgrel=14
 pkgdesc="Logos, wallpapers and grub themes for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
-# List the local directory in source so makepkg copies it to $srcdir
-source=("src")
-sha256sums=('SKIP')
+source=()
+sha256sums=()
+
+# Using prepare to copy files into the build root before fakeroot
+prepare() {
+    [ -d "$startdir/src" ] && cp -r "$startdir/src" "$srcdir/"
+}
 
 package() {
     # Logos
