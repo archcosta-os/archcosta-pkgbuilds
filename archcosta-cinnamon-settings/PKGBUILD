@@ -1,6 +1,6 @@
 pkgname=archcosta-cinnamon-settings
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta Cinnamon configuration files"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
@@ -8,6 +8,7 @@ license=('GPL3')
 source=()
 sha256sums=()
 package() {
-    [ -d "$startdir/archcosta-cinnamon-settings/etc" ] && cp -r "$startdir/archcosta-cinnamon-settings/etc" "$pkgdir/"
-    [ -d "$startdir/archcosta-cinnamon-settings/usr" ] && cp -r "$startdir/archcosta-cinnamon-settings/usr" "$pkgdir/"
+    local base_dir="$startdir"
+    [ -d "$base_dir/etc" ] && cp -r "$base_dir/etc" "$pkgdir/"
+    [ -d "$base_dir/usr" ] && cp -r "$base_dir/usr" "$pkgdir/"
 }

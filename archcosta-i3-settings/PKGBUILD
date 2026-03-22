@@ -1,6 +1,6 @@
 pkgname=archcosta-i3-settings
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta i3wm configuration files"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
@@ -8,6 +8,8 @@ license=('GPL3')
 source=()
 sha256sums=()
 package() {
-    [ -d "$startdir/archcosta-i3-settings/etc" ] && cp -r "$startdir/archcosta-i3-settings/etc" "$pkgdir/"
-    [ -d "$startdir/archcosta-i3-settings/usr" ] && cp -r "$startdir/archcosta-i3-settings/usr" "$pkgdir/"
+    # Find etc and usr folders regardless of exact subpath
+    local base_dir="$startdir"
+    [ -d "$base_dir/etc" ] && cp -r "$base_dir/etc" "$pkgdir/"
+    [ -d "$base_dir/usr" ] && cp -r "$base_dir/usr" "$pkgdir/"
 }
