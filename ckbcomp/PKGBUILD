@@ -1,13 +1,13 @@
 pkgname=ckbcomp
 pkgver=1.244
-pkgrel=2
+pkgrel=3
 pkgdesc="Console keyboard layout translation tool"
 arch=('any')
 url="https://salsa.debian.org/installer-team/console-setup"
 license=('GPL')
 depends=('perl')
-# Switch to a more reliable source (Arch Linux packaging mirror)
-source=("https://sources.archlinux.org/other/packages/ckbcomp/console-setup-${pkgver}.tar.gz")
+# Use the confirmed working Salsa URL
+source=("https://salsa.debian.org/installer-team/console-setup/-/archive/${pkgver}/console-setup-${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
 package() {
