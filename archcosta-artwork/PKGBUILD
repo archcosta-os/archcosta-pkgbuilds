@@ -11,6 +11,6 @@ sha256sums=()
 package() {
     # Grub Theme
     mkdir -p "$pkgdir/usr/share/grub/themes/archcosta"
-    cp -r "$startdir/src/grub/archcosta-grub-theme/." \
+    cp -r "$srcdir/../src/grub/archcosta-grub-theme/." \
         "$pkgdir/usr/share/grub/themes/archcosta/"
 }
