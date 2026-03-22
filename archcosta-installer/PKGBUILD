@@ -1,7 +1,7 @@
 # Maintainer: ArchCosta Team
 pkgname=archcosta-installer
 pkgver=260308
-pkgrel=1
+pkgrel=2
 pkgdesc="A modern, user-friendly graphical installation tool for ArchCosta Linux"
 arch=('any')
 url="https://github.com/Petexy/linexin-installer"
@@ -12,6 +12,7 @@ source=("git+https://github.com/Petexy/linexin-installer.git")
 sha256sums=('SKIP')
 
 package() {
+  # In Arch Linux, sources are downloaded to $srcdir/repo-name
   cd "$srcdir/linexin-installer"
   
   # Install the main application files
@@ -20,7 +21,6 @@ package() {
   
   # Install the executable script
   install -d "$pkgdir/usr/bin"
-  # We use a wrapper to handle branding and execution
   cat << EOF > "$pkgdir/usr/bin/archcosta-installer"
 #!/bin/bash
 exec python /usr/share/archcosta-installer/main.py "\$@"

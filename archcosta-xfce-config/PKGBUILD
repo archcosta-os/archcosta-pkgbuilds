@@ -8,11 +8,11 @@ license=('GPL3')
 source=()
 sha256sums=()
 package() {
-    if [ -d "$srcdir/../archcosta-xfce-settings" ]; then
-        cp -r "$srcdir/../archcosta-xfce-settings/etc" "$pkgdir/" 2>/dev/null || true
-        cp -r "$srcdir/../archcosta-xfce-settings/usr" "$pkgdir/" 2>/dev/null || true
+    if [ -d "$startdir/archcosta-xfce-settings" ]; then
+        cp -r "$startdir/archcosta-xfce-settings/etc" "$pkgdir/" 2>/dev/null || true
+        cp -r "$startdir/archcosta-xfce-settings/usr" "$pkgdir/" 2>/dev/null || true
     else
-        [ -d "$srcdir/../etc" ] && cp -r "$srcdir/../etc" "$pkgdir/"
-        [ -d "$srcdir/../usr" ] && cp -r "$srcdir/../usr" "$pkgdir/"
+        [ -d "$startdir/etc" ] && cp -r "$startdir/etc" "$pkgdir/"
+        [ -d "$startdir/usr" ] && cp -r "$startdir/usr" "$pkgdir/"
     fi
 }
