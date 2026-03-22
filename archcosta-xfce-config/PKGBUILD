@@ -1,6 +1,6 @@
 pkgname=archcosta-xfce-config
 pkgver=1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="ArchCosta XFCE configuration files"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
@@ -8,12 +8,14 @@ license=('GPL3')
 source=()
 sha256sums=()
 prepare() {
-    if [ -d "$startdir/archcosta-xfce-settings" ]; then
-        cp -r "$startdir/archcosta-xfce-settings/etc" "$srcdir/"
-        cp -r "$startdir/archcosta-xfce-settings/usr" "$srcdir/"
-    else
-        [ -d "$startdir/etc" ] && cp -r "$startdir/etc" "$srcdir/"
-        [ -d "$startdir/usr" ] && cp -r "$startdir/usr" "$srcdir/"
+    if [ ! -d "$srcdir/etc" ]; then
+        if [ -d "$startdir/archcosta-xfce-settings" ]; then
+            cp -r "$startdir/archcosta-xfce-settings/etc" "$srcdir/"
+            cp -r "$startdir/archcosta-xfce-settings/usr" "$srcdir/"
+        else
+            [ -d "$startdir/etc" ] && cp -r "$startdir/etc" "$srcdir/"
+            [ -d "$startdir/usr" ] && cp -r "$startdir/usr" "$srcdir/"
+        fi
     fi
 }
 package() {
