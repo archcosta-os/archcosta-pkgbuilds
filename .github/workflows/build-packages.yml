@@ -69,13 +69,13 @@ jobs:
         run: |
           mkdir -p repo/
           
-          # WIPE: Do not download old database. Start completely fresh.
-          # curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
+          # 1. Download existing database to preserve other packages (Plasma, XFCE, etc.)
+          curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
           
           cp built-packages/*.pkg.tar.zst repo/ || true
           cd repo
           
-          # Create a BRAND NEW database
+          # 2. Add packages to the EXISTING database
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
             repo-add archcosta.db.tar.gz *.pkg.tar.zst
             ln -sf archcosta.db.tar.gz archcosta.db
