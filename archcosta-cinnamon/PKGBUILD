@@ -1,6 +1,6 @@
 pkgname=archcosta-cinnamon
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta Cinnamon Desktop meta-package"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-cinnamon"
@@ -10,7 +10,6 @@ depends=(
   'lightdm'
   'lightdm-gtk-greeter'
   'nemo'
-  'gnome-terminal'
   'metacity'
   'archcosta-settings'
   'archcosta-artwork'

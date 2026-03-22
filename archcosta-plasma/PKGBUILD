@@ -1,6 +1,6 @@
 pkgname=archcosta-plasma
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta KDE Plasma Desktop meta-package"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-plasma"
@@ -8,7 +8,6 @@ license=('GPL3')
 depends=(
   'plasma-meta'
   'sddm'
-  'konsole'
   'dolphin'
   'ark'
   'okular'
