@@ -1,6 +1,6 @@
 pkgname=archcosta-skeleton
 pkgver=1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="Default skeleton files for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"

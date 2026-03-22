@@ -1,6 +1,6 @@
 pkgname=archcosta-cinnamon-settings
 pkgver=1.0
-pkgrel=8
+pkgrel=9
 pkgdesc="ArchCosta Cinnamon configuration files"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
