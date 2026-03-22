@@ -52,8 +52,8 @@ jobs:
           mkdir -p built-packages
           chown -R build:build built-packages
           
-          # List of all 23 packages
-          PKGS=(archcosta-plasma archcosta-xfce archcosta-hyprland archcosta-i3 archcosta-cinnamon archcosta-mate calamares-settings-arch archcosta-bash-shared archcosta-hooks ckbcomp mkinitcpio-openswap archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-installer archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager archcosta-assistant archcosta-gamer archcosta-update)
+          # List of all 23 packages (Fastest first)
+          PKGS=(archcosta-plasma archcosta-xfce archcosta-hyprland archcosta-i3 archcosta-cinnamon archcosta-mate archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager archcosta-assistant archcosta-gamer archcosta-update ckbcomp mkinitcpio-openswap calamares-settings-arch)
           
           for pkg in "${PKGS[@]}"; do
             if [ -d "$pkg" ]; then
