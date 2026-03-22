@@ -59,8 +59,11 @@ jobs:
             if [ -d "$pkg" ]; then
               echo "Building $pkg..."
               cd "$pkg"
-              su build -c "makepkg -scf --noconfirm --nodeps" || echo "Failed to build $pkg"
-              mv *.pkg.tar.zst ../built-packages/ || true
+              if su build -c "makepkg -scf --noconfirm --nodeps"; then
+                mv *.pkg.tar.zst ../built-packages/
+              else
+                echo "::error::Failed to build $pkg"
+              fi
               cd ..
             fi
           done
@@ -69,15 +72,16 @@ jobs:
         run: |
           mkdir -p repo/
           
-          # 1. Download existing database to preserve other packages (Plasma, XFCE, etc.)
+          # 1. Download existing database to preserve other packages
           curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
           
+          # 2. Copy newly built packages
           cp built-packages/*.pkg.tar.zst repo/ || true
-          cd repo
           
-          # 2. Add packages to the EXISTING database
+          cd repo
+          # 3. Add packages to the EXISTING database
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
-            repo-add archcosta.db.tar.gz *.pkg.tar.zst
+            repo-add -n -R archcosta.db.tar.gz *.pkg.tar.zst
             ln -sf archcosta.db.tar.gz archcosta.db
             ln -sf archcosta.files.tar.gz archcosta.files
           fi
