@@ -1,0 +1,22 @@
+pkgname=archcosta-i3
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta i3wm meta-package"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-i3"
+license=('GPL3')
+depends=(
+  'i3-wm'
+  'i3status'
+  'i3lock'
+  'dmenu'
+  'lightdm'
+  'alacritty'
+  'archcosta-i3-settings'
+  'archcosta-settings'
+  'archcosta-artwork'
+)
+package() {
+  mkdir -p "$pkgdir/usr/share/archcosta"
+  echo "ArchCosta i3 Window Manager" > "$pkgdir/usr/share/archcosta/i3"
+}

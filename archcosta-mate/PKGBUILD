@@ -1,0 +1,19 @@
+pkgname=archcosta-mate
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta MATE Desktop meta-package"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-mate"
+license=('GPL3')
+depends=(
+  'mate'
+  'mate-extra'
+  'lightdm'
+  'lightdm-gtk-greeter'
+  'archcosta-settings'
+  'archcosta-artwork'
+)
+package() {
+  mkdir -p "$pkgdir/usr/share/archcosta"
+  echo "ArchCosta MATE Desktop Environment" > "$pkgdir/usr/share/archcosta/mate"
+}

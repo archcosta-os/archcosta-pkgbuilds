@@ -1,0 +1,20 @@
+pkgname=archcosta-xfce
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta XFCE Desktop meta-package"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-xfce"
+license=('GPL3')
+depends=(
+  'xfce4'
+  'xfce4-goodies'
+  'lightdm'
+  'lightdm-gtk-greeter'
+  'archcosta-xfce-config'
+  'archcosta-settings'
+  'archcosta-artwork'
+)
+package() {
+  mkdir -p "$pkgdir/usr/share/archcosta"
+  echo "ArchCosta XFCE Desktop Environment" > "$pkgdir/usr/share/archcosta/xfce"
+}

@@ -1,0 +1,21 @@
+pkgname=archcosta-cinnamon
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta Cinnamon Desktop meta-package"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-cinnamon"
+license=('GPL3')
+depends=(
+  'cinnamon'
+  'lightdm'
+  'lightdm-gtk-greeter'
+  'nemo'
+  'gnome-terminal'
+  'metacity'
+  'archcosta-settings'
+  'archcosta-artwork'
+)
+package() {
+  mkdir -p "$pkgdir/usr/share/archcosta"
+  echo "ArchCosta Cinnamon Desktop Environment" > "$pkgdir/usr/share/archcosta/cinnamon"
+}

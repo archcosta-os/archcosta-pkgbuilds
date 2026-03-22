@@ -1,0 +1,22 @@
+pkgname=archcosta-hyprland
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta Hyprland meta-package"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-hyprland"
+license=('GPL3')
+depends=(
+  'hyprland'
+  'waybar'
+  'swaybg'
+  'swaylock-effects'
+  'wofi'
+  'kitty'
+  'archcosta-hyprland-settings'
+  'archcosta-settings'
+  'archcosta-artwork'
+)
+package() {
+  mkdir -p "$pkgdir/usr/share/archcosta"
+  echo "ArchCosta Hyprland Window Manager" > "$pkgdir/usr/share/archcosta/hyprland"
+}
