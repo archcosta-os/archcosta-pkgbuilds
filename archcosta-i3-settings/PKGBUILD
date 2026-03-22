@@ -1,0 +1,13 @@
+pkgname=archcosta-i3-settings
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta i3wm configuration files"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+source=()
+sha256sums=()
+package() {
+    [ -d "$startdir/archcosta-i3-settings/etc" ] && cp -r "$startdir/archcosta-i3-settings/etc" "$pkgdir/"
+    [ -d "$startdir/archcosta-i3-settings/usr" ] && cp -r "$startdir/archcosta-i3-settings/usr" "$pkgdir/"
+}

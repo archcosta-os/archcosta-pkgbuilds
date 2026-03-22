@@ -1,15 +1,15 @@
 pkgname=archcosta-mate
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta MATE Desktop meta-package"
 arch=('any')
-url="https://github.com/archcosta-os/archcosta-mate"
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 depends=(
-  'mate'
-  'mate-extra'
+  'atril' 'caja' 'engrampa' 'eom' 'marco' 'mate-applets' 'mate-backgrounds' 'mate-calc' 'mate-control-center' 'mate-desktop' 'mate-icon-theme' 'mate-media' 'mate-menus' 'mate-notification-daemon' 'mate-panel' 'mate-polkit' 'mate-power-manager' 'mate-screensaver' 'mate-session-manager' 'mate-settings-daemon' 'mate-system-monitor' 'mate-terminal' 'mate-user-guide' 'mate-utils' 'pluma'
   'lightdm'
   'lightdm-gtk-greeter'
+  'archcosta-mate-settings'
   'archcosta-settings'
   'archcosta-artwork'
 )

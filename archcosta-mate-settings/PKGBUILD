@@ -1,0 +1,13 @@
+pkgname=archcosta-mate-settings
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta MATE configuration files"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+source=()
+sha256sums=()
+package() {
+    [ -d "$startdir/archcosta-mate-settings/etc" ] && cp -r "$startdir/archcosta-mate-settings/etc" "$pkgdir/"
+    [ -d "$startdir/archcosta-mate-settings/usr" ] && cp -r "$startdir/archcosta-mate-settings/usr" "$pkgdir/"
+}

@@ -1,0 +1,13 @@
+pkgname=archcosta-hyprland-settings
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta Hyprland configuration files"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+source=()
+sha256sums=()
+package() {
+    [ -d "$startdir/archcosta-hyprland-settings/etc" ] && cp -r "$startdir/archcosta-hyprland-settings/etc" "$pkgdir/"
+    [ -d "$startdir/archcosta-hyprland-settings/usr" ] && cp -r "$startdir/archcosta-hyprland-settings/usr" "$pkgdir/"
+}

@@ -1,15 +1,15 @@
 pkgname=archcosta-hyprland
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta Hyprland meta-package"
 arch=('any')
-url="https://github.com/archcosta-os/archcosta-hyprland"
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 depends=(
   'hyprland'
   'waybar'
   'swaybg'
-  'swaylock-effects'
+  'swaylock'
   'wofi'
   'kitty'
   'archcosta-hyprland-settings'

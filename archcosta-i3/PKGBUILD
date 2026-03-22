@@ -1,9 +1,9 @@
 pkgname=archcosta-i3
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta i3wm meta-package"
 arch=('any')
-url="https://github.com/archcosta-os/archcosta-i3"
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 depends=(
   'i3-wm'

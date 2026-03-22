@@ -1,13 +1,12 @@
 pkgname=archcosta-xfce
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta XFCE Desktop meta-package"
 arch=('any')
-url="https://github.com/archcosta-os/archcosta-xfce"
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 depends=(
-  'xfce4'
-  'xfce4-goodies'
+  'exo' 'garcon' 'libxfce4ui' 'libxfce4util' 'thunar' 'thunar-volman' 'tumbler' 'xfce4-appfinder' 'xfce4-panel' 'xfce4-power-manager' 'xfce4-session' 'xfce4-settings' 'xfce4-terminal' 'xfconf' 'xfdesktop' 'xfwm4'
   'lightdm'
   'lightdm-gtk-greeter'
   'archcosta-xfce-config'

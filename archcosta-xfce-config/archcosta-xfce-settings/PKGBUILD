@@ -1,0 +1,14 @@
+pkgname=archcosta-xfce-settings
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta configuration for ${new_name#archcosta-}"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-settings"
+license=('GPL3')
+source=()
+sha256sums=()
+
+package() {
+    [ -d "$startdir/etc" ] && cp -r "$startdir/etc" "$pkgdir/"
+    [ -d "$startdir/usr" ] && cp -r "$startdir/usr" "$pkgdir/"
+}
