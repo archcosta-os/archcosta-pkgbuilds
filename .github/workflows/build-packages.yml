@@ -53,7 +53,7 @@ jobs:
           chown -R build:build built-packages
           
           # List of all 17 packages
-          PKGS=(archcosta-bash-shared archcosta-hooks ckbcomp mkinitcpio-openswap archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-installer archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager archcosta-assistant archcosta-gamer archcosta-update)
+          PKGS=(calamares-settings-arch archcosta-bash-shared archcosta-hooks ckbcomp mkinitcpio-openswap archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-xfce-config archcosta-welcome archcosta-installer archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager archcosta-assistant archcosta-gamer archcosta-update)
           
           for pkg in "${PKGS[@]}"; do
             if [ -d "$pkg" ]; then
