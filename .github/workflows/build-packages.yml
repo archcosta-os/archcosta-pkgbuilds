@@ -43,8 +43,6 @@ jobs:
           
           mkdir -p "$CCACHE_DIR"
           useradd -m build
-          
-          # Fix permissions for the workspace and ccache dir
           chown -R build:build .
           chown -R build:build "$CCACHE_DIR"
           chmod -R 777 "$CCACHE_DIR"
@@ -52,8 +50,7 @@ jobs:
           mkdir -p built-packages
           chown -R build:build built-packages
           
-          # List of all 28 packages (Fastest first)
-          PKGS=(archcosta-plasma archcosta-xfce archcosta-cinnamon archcosta-mate archcosta-xfce-config archcosta-cinnamon-settings archcosta-mate-settings archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-welcome archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager archcosta-assistant archcosta-gamer archcosta-update ckbcomp mkinitcpio-openswap calamares-settings-arch)
+          PKGS=(archcosta-plasma archcosta-xfce archcosta-cinnamon archcosta-mate archcosta-xfce-config archcosta-cinnamon-settings archcosta-mate-settings archcosta-bash-shared archcosta-hooks archcosta-performance-tweaks archcosta-settings archcosta-skeleton archcosta-artwork archcosta-welcome archcosta-installer archcosta-wiki archcosta-update-notifier archcosta-log-tool archcosta-kernel-manager archcosta-assistant archcosta-gamer archcosta-update ckbcomp mkinitcpio-openswap calamares-settings-arch)
           
           for pkg in "${PKGS[@]}"; do
             if [ -d "$pkg" ]; then
@@ -61,30 +58,30 @@ jobs:
               cd "$pkg"
               if su build -c "makepkg -scf --noconfirm --nodeps"; then
                 mv *.pkg.tar.zst ../built-packages/
-              else
-                echo "::error::Failed to build $pkg"
               fi
               cd ..
             fi
           done
 
+      - name: Create Release and Upload
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="packages-$(date +'%Y.%m.%d-%H%M')"
+          gh release create "$TAG_NAME" built-packages/*.pkg.tar.zst --title "Build $TAG_NAME" --notes "Automated package build"
+
       - name: Create pacman repo database
         run: |
           mkdir -p repo/
-          
-          # 1. Download existing database to preserve other packages
-          curl -L https://archcosta-os.github.io/archcosta-pkgbuilds/archcosta.db.tar.gz -o repo/archcosta.db.tar.gz || true
-          
-          # 2. Copy newly built packages
-          cp built-packages/*.pkg.tar.zst repo/ || true
-          
+          cp built-packages/*.pkg.tar.zst repo/
           cd repo
-          # 3. Add packages to the EXISTING database
           if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
             repo-add -n -R archcosta.db.tar.gz *.pkg.tar.zst
             ln -sf archcosta.db.tar.gz archcosta.db
             ln -sf archcosta.files.tar.gz archcosta.files
           fi
+          # Delete large files before git push to prevent download failures
+          find . -size +45M -delete
           cd ..
 
       - name: Deploy Database to GitHub Pages
@@ -92,4 +89,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./repo
-          keep_files: false
+          keep_files: true
