@@ -1,0 +1,48 @@
+#!/bin/bash
+
+archcosta_add_update_notice() {
+  mkdir -p /var/lib/archcosta/tmp
+  echo "$(date +%F)	${1//	/    }" >>/var/lib/archcosta/tmp/update_notices
+}
+
+archcosta_check_root() {
+  if [[ $EUID -ne 0 ]]; then
+    echo "This operation requires root privileges."
+    echo "Please run with sudo or as root."
+    return 1
+  fi
+  return 0
+}
+
+archcosta_is_live() {
+  if grep -q "archcow" /etc/os-release 2>/dev/null; then
+    return 0
+  elif [[ -f /run/archiso/sessionsession ]]; then
+    return 0
+  fi
+  return 1
+}
+
+archcosta_detect_de() {
+  if [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]] || [[ "$XDG_CURRENT_DESKTOP" == *"Plasma"* ]]; then
+    echo "plasma"
+  elif [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
+    echo "gnome"
+  elif [[ "$XDG_CURRENT_DESKTOP" == *"Xfce"* ]]; then
+    echo "xfce"
+  elif [[ "$XDG_CURRENT_DESKTOP" == *"MATE"* ]]; then
+    echo "mate"
+  elif [[ "$XDG_CURRENT_DESKTOP" == *"Cinnamon"* ]]; then
+    echo "cinnamon"
+  elif [[ "$XDG_CURRENT_DESKTOP" == *"Hyprland"* ]]; then
+    echo "hyprland"
+  elif [[ "$XDG_CURRENT_DESKTOP" == *"i3"* ]]; then
+    echo "i3"
+  elif [[ "$XDG_CURRENT_DESKTOP" == *"bspwm"* ]]; then
+    echo "bspwm"
+  elif [[ "$XDG_CURRENT_DESKTOP" == *"qtile"* ]]; then
+    echo "qtile"
+  else
+    echo "unknown"
+  fi
+}

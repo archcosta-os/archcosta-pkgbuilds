@@ -1,0 +1,30 @@
+# Maintainer: ArchCosta Team <archcosta@example.com>
+
+pkgname=archcosta-hyprland
+pkgver=1.0
+pkgrel=1
+pkgdesc="Hyprland Wayland compositor configuration for ArchCosta"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL-3.0-or-later')
+depends=('hyprland' 'waybar' 'wofi' 'swww' 'wl-clipboard' 'xdg-desktop-portal-hyprland' 'rofi-wayland' 'wofi' 'wofi-emoji' 'xdg-user-dirs' 'polkit-gnome' 'network-manager-applet' 'volumeicon' 'playerctl' 'brightnessctl' 'bluez' 'blueman')
+optdepends=('waybar: status bar' 'wofi: application launcher' 'swww: wallpaper')
+provides=('archcosta-windowmanager')
+conflicts=('archcosta-i3wm' 'archcosta-bspwm' 'archcosta-qtile')
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  install -d "${pkgdir}/etc/skel/.config/hypr"
+  install -d "${pkgdir}/etc/skel/.config/waybar"
+  install -d "${pkgdir}/etc/skel/.config/wofi"
+  install -d "${pkgdir}/etc/skel/.config/swww"
+  install -d "${pkgdir}/usr/share/wayland-sessions"
+
+  cp -rf etc/skel/.config/hypr "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/waybar "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/wofi "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/swww "${pkgdir}/etc/skel/.config/"
+
+  install -Dm644 usr/share/wayland-sessions/hyprland.desktop "${pkgdir}/usr/share/wayland-sessions/hyprland.desktop"
+}

@@ -1,0 +1,9 @@
+[Trigger]
+Type = Package
+Operation = Remove
+
+[Action]
+Description = Checking for orphaned packages...
+When = PostTransaction
+Exec = /usr/bin/pacman -Qtdq > /dev/null 2>&1 && echo "Orphaned packages found. Run 'pacman -Rns $(pacman -Qtdq)' to remove." || true
+NeedsTargets

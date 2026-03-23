@@ -1,0 +1,14 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Target = linux
+Target = linux-lts
+Target = linux-zen
+Target = linux-hardened
+
+[Action]
+Description = Rebuilding initcpio images...
+When = PostTransaction
+Exec = /usr/bin/mkinitcpio -P
+NeedsTargets

@@ -1,0 +1,28 @@
+# Maintainer: ArchCosta Team <archcosta@example.com>
+
+pkgname=archcosta-qtile
+pkgver=1.0
+pkgrel=1
+pkgdesc="Qtile tiling window manager configuration for ArchCosta"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL-3.0-or-later')
+depends=('qtile' 'python-psutil' 'python-xcffib' 'python-cairocffi' 'rofi' 'feh' 'picom' 'lxappearance' 'polkit-gnome' 'network-manager-applet' 'volumeicon' 'playerctl')
+optdepends=('qtile-extras: extra widgets')
+provides=('archcosta-windowmanager')
+conflicts=('archcosta-i3wm' 'archcosta-bspwm' 'archcosta-hyprland')
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  install -d "${pkgdir}/etc/skel/.config/qtile"
+  install -d "${pkgdir}/etc/skel/.config/rofi"
+  install -d "${pkgdir}/etc/skel/.config/picom"
+  install -d "${pkgdir}/usr/share/xsessions"
+
+  cp -rf etc/skel/.config/qtile "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/rofi "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/picom "${pkgdir}/etc/skel/.config/"
+
+  install -Dm644 usr/share/xsessions/qtile.desktop "${pkgdir}/usr/share/xsessions/qtile.desktop"
+}

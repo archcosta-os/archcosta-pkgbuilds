@@ -1,0 +1,9 @@
+[Trigger]
+Type = File
+Operation = Create
+Target = /etc/os-release
+
+[Action]
+Description = Updating system identification...
+When = PostTransaction
+Exec = /usr/bin/hwclock --systz --utc

@@ -1,0 +1,32 @@
+# Maintainer: ArchCosta Team <archcosta@example.com>
+
+pkgname=archcosta-libs
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Libraries commonly used by ArchCosta software"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL-3.0-or-later')
+depends=('libnotify' 'expect' 'qt6-base')
+optdepends=(
+  'alacritty: default terminal'
+  'xfce4-terminal: lightweight terminal'
+  'konsole: KDE terminal'
+  'gnome-terminal: GNOME terminal'
+  'qrencode: QR code generation'
+)
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  install -d "${pkgdir}/usr/lib/archcosta"
+  install -d "${pkgdir}/usr/bin"
+  install -d "${pkgdir}/var/lib/archcosta/tmp"
+  install -d "${pkgdir}/usr/share/polkit-1/actions"
+
+  install -Dm755 usr/lib/archcosta/launch-terminal "${pkgdir}/usr/lib/archcosta/launch-terminal"
+  install -Dm755 usr/lib/archcosta/install-software "${pkgdir}/usr/lib/archcosta/install-software"
+  install -Dm755 usr/lib/archcosta/pkexec-gui "${pkgdir}/usr/lib/archcosta/pkexec-gui"
+  install -Dm755 usr/lib/archcosta/archcosta.shlib "${pkgdir}/usr/lib/archcosta/archcosta.shlib"
+  install -Dm644 usr/share/polkit-1/actions/org.archcosta.libs.pkexec.policy "${pkgdir}/usr/share/polkit-1/actions/org.archcosta.libs.pkexec.policy"
+}

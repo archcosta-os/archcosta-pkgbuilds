@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Qtile
+Comment=Small, full-featured tiling window manager written in Python
+Exec=qtile start
+Icon=qtile
+Type=Application
+DesktopNames=qtile
+Keywords=wm;window;manager;tiling;wm;qtile

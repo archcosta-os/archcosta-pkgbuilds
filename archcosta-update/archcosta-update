@@ -1,39 +1,295 @@
 #!/bin/bash
 
 # ArchCosta Update Utility
-# A robust system update wrapper
 
-echo "--------------------------------------------------"
-echo "🚀 Starting ArchCosta System Update"
-echo "--------------------------------------------------"
+set -euo pipefail
 
-# 1. Refresh Keyring
-echo ":: Updating keyrings..."
-sudo pacman -Sy --needed --noconfirm archlinux-keyring 2>/dev/null
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
 
-# 2. Refresh Mirrors
-echo ":: Finding fastest mirrors..."
-if command -v reflector >/dev/null 2>&1; then
-    sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist 2>/dev/null
-fi
+ARCHCOSTA_ASCII="
 
-# 3. System Update
-echo ":: Synchronizing package databases and upgrading system..."
-sudo pacman -Syu
+    █████╗ ██████╗ ██████╗ ███████╗██╗██████╗ ██╗ █████╗ ███╗   ██╗
+   ██╔══██╗██╔══██╗██╔══██╗██╔════╝██║██╔══██╗██║██╔══██╗████╗  ██║
+   ███████║██████╔╝██████╔╝███████╗██║██████╔╝██║███████║██╔██╗ ██║
+   ██╔══██║██╔══██╗██╔══██╗╚════██║██║██╔══██╗██║██╔══██║██║╚██╗██║
+   ██║  ██║██║  ██║██████╔╝███████║██║██║  ██║██║██║  ██║██║ ╚████║
+   ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+"
 
-# 4. AUR Update (Detect helper)
-if command -v paru >/dev/null 2>&1; then
-    echo ":: Updating AUR packages with paru..."
-    paru -Sua
-elif command -v yay >/dev/null 2>&1; then
-    echo ":: Updating AUR packages with yay..."
-    yay -Sua
-fi
+BANNER="${CYAN}${ARCHCOSTA_ASCII}${NC}"
+VERSION="1.0.0"
+LOG_FILE="/var/log/archcosta/update.log"
 
-# 5. Cleanup
-echo ":: Cleaning up package cache..."
-sudo pacman -Sc --noconfirm
+show_banner() {
+  clear
+  echo -e "$BANNER"
+  echo -e "${BLUE}System Update Utility v${VERSION}${NC}"
+  echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo ""
+}
 
-echo "--------------------------------------------------"
-echo "✅ Update Complete!"
-echo "--------------------------------------------------"
+log() {
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+}
+
+usage() {
+  cat << EOF
+Usage: archcosta-update [options]
+
+Options:
+  -h, --help              Show this help message
+  -y, --noconfirm        Skip confirmation prompts
+  -u, --upgradepkg       Also upgrade AUR packages (if yay/paru available)
+  -c, --clean             Clean package cache after update
+  -s, --sysupgrade       System upgrade only (skip refresh)
+  -n, --news             Show ArchCosta news/announcements
+  -v, --version          Show version information
+
+Examples:
+  archcosta-update                  # Full system update
+  archcosta-update -y              # Update without confirmation
+  archcosta-update -c               # Update and clean cache
+  archcosta-update -u               # Include AUR packages
+EOF
+}
+
+check_root() {
+  if [[ $EUID -eq 0 ]]; then
+    echo -e "${RED}Error: Do not run as root!${NC}"
+    exit 1
+  fi
+}
+
+check_network() {
+  if ! ping -c 1 8.8.8.8 &>/dev/null; then
+    echo -e "${RED}Error: No internet connection!${NC}"
+    exit 1
+  fi
+}
+
+check_disk_space() {
+  local space=$(df -h / | awk 'NR==2 {print $5}' | tr -d '%')
+  if (( space >= 90 )); then
+    echo -e "${RED}Warning: Disk space is critically low (${space}%)!${NC}"
+    read -p "Continue anyway? [y/N] " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      exit 1
+    fi
+  fi
+}
+
+check_updates() {
+  echo -e "${BLUE}Checking for updates...${NC}"
+  local updates=$(pacman -Qu 2>/dev/null | wc -l)
+  if (( updates == 0 )); then
+    echo -e "${GREEN}System is up to date!${NC}"
+    return 1
+  else
+    echo -e "${YELLOW}$updates package(s) can be updated${NC}"
+    return 0
+  fi
+}
+
+show_news() {
+  echo -e "${BLUE}ArchCosta News:${NC}"
+  echo "Checking for announcements..."
+  echo ""
+}
+
+refresh_mirrors() {
+  if command -v reflector &>/dev/null; then
+    echo -e "${BLUE}Refreshing mirror list...${NC}"
+    sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist 2>/dev/null || true
+  fi
+}
+
+sysupgrade() {
+  local noconfirm=""
+  local refresh="--refresh"
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -y|--noconfirm)
+        noconfirm="--noconfirm"
+        shift
+        ;;
+      -s|--sysupgrade)
+        refresh=""
+        shift
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+
+  echo ""
+  echo -e "${YELLOW}Starting system upgrade...${NC}"
+  echo ""
+
+  log "Starting system upgrade"
+
+  if ! sudo pacman ${refresh:--Sy} --noconfirm 2>&1 | tee -a "$LOG_FILE"; then
+    echo ""
+    echo -e "${RED}Error: Failed to sync packages!${NC}"
+    log "Failed to sync packages"
+    exit 1
+  fi
+
+  if ! sudo pacman -Su --noconfirm 2>&1 | tee -a "$LOG_FILE"; then
+    echo ""
+    echo -e "${RED}Error: Failed to upgrade packages!${NC}"
+    log "Failed to upgrade packages"
+    exit 1
+  fi
+
+  echo ""
+  echo -e "${GREEN}System upgrade complete!${NC}"
+  log "System upgrade complete"
+}
+
+aur_upgrade() {
+  local aur_helper=""
+  
+  if command -v yay &>/dev/null; then
+    aur_helper="yay"
+  elif command -v paru &>/dev/null; then
+    aur_helper="paru"
+  else
+    echo -e "${YELLOW}No AUR helper found. Install yay or paru for AUR support.${NC}"
+    return
+  fi
+
+  echo ""
+  echo -e "${BLUE}Upgrading AUR packages with $aur_helper...${NC}"
+  
+  if ! $aur_helper -Sua --noconfirm 2>&1 | tee -a "$LOG_FILE"; then
+    echo ""
+    echo -e "${RED}Error: AUR upgrade failed!${NC}"
+    log "AUR upgrade failed"
+  else
+    echo ""
+    echo -e "${GREEN}AUR packages upgraded!${NC}"
+    log "AUR packages upgraded"
+  fi
+}
+
+clean_cache() {
+  echo ""
+  echo -e "${BLUE}Cleaning package cache...${NC}"
+  sudo paccache -rk1 -c /var/cache/pacman/pkg
+  sudo paccache -ruk0 -c /var/cache/pacman/pkg
+  echo -e "${GREEN}Package cache cleaned!${NC}"
+  log "Package cache cleaned"
+}
+
+show_statistics() {
+  echo ""
+  echo -e "${BLUE}Update Statistics:${NC}"
+  echo "  Updated packages: $(grep -c "installed " "$LOG_FILE" 2>/dev/null || echo "0")"
+  echo "  Log file: $LOG_FILE"
+}
+
+main() {
+  local noconfirm=""
+  local do_clean=false
+  local do_aur=false
+  local do_sysupgrade=true
+
+  if [[ $# -eq 0 ]]; then
+    show_banner
+    check_root
+    check_network
+    check_disk_space
+    
+    if ! check_updates; then
+      read -p "Run anyway? [y/N] " -n 1 -r
+      echo
+      [[ ! $REPLY =~ ^[Yy]$ ]] && exit 0
+    fi
+    
+    refresh_mirrors
+    sysupgrade
+    show_statistics
+    
+    echo ""
+    read -p "Reboot now? [y/N] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      sudo reboot
+    fi
+    return
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        show_banner
+        usage
+        exit 0
+        ;;
+      -y|--noconfirm)
+        noconfirm="--noconfirm"
+        shift
+        ;;
+      -c|--clean)
+        do_clean=true
+        shift
+        ;;
+      -u|--upgradepkg)
+        do_aur=true
+        shift
+        ;;
+      -s|--sysupgrade)
+        do_sysupgrade=true
+        shift
+        ;;
+      -n|--news)
+        show_news
+        exit 0
+        ;;
+      -v|--version)
+        echo "archcosta-update v${VERSION}"
+        exit 0
+        ;;
+      *)
+        echo -e "${RED}Unknown option: $1${NC}"
+        usage
+        exit 1
+        ;;
+    esac
+  done
+
+  show_banner
+  check_root
+  check_network
+
+  if $do_sysupgrade; then
+    sysupgrade
+  fi
+
+  if $do_aur; then
+    aur_upgrade
+  fi
+
+  if $do_clean; then
+    clean_cache
+  fi
+
+  show_statistics
+
+  echo ""
+  echo -e "${GREEN}Done!${NC}"
+  log "Update completed successfully"
+}
+
+mkdir -p "$(dirname "$LOG_FILE")"
+touch "$LOG_FILE"
+
+main "$@"

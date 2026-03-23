@@ -1,0 +1,106 @@
+/* Waybar style for ArchCosta */
+
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrains Mono Nerd Font", monospace;
+  font-size: 13px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: rgba(40, 42, 54, 0.95);
+  color: #f8f8f2;
+}
+
+tooltip {
+  background: #282a36;
+  border: 2px solid #6272a4;
+  border-radius: 8px;
+}
+
+#workspaces button {
+  padding: 0 8px;
+  color: #f8f8f2;
+  border-radius: 4px;
+  margin: 4px 2px;
+  background: transparent;
+}
+
+#workspaces button:hover {
+  background: rgba(189, 147, 249, 0.2);
+}
+
+#workspaces button.active {
+  background: #bd93f9;
+  color: #282a36;
+}
+
+#workspaces button.urgent {
+  background: #ff5555;
+  color: #f8f8f2;
+}
+
+#window {
+  padding: 0 16px;
+  color: #f8f8f2;
+}
+
+#clock {
+  padding: 0 16px;
+  color: #8be9fd;
+}
+
+#cpu {
+  padding: 0 8px;
+  color: #50fa7b;
+}
+
+#memory {
+  padding: 0 8px;
+  color: #f1fa8c;
+}
+
+#battery {
+  padding: 0 8px;
+  color: #50fa7b;
+}
+
+#battery.warning {
+  color: #ffb86c;
+}
+
+#battery.critical {
+  color: #ff5555;
+}
+
+#network {
+  padding: 0 8px;
+  color: #6272a4;
+}
+
+#network.disconnected {
+  color: #ff5555;
+}
+
+#pulseaudio {
+  padding: 0 8px;
+  color: #ff79c6;
+}
+
+#pulseaudio.muted {
+  color: #6272a4;
+}
+
+#tray {
+  padding: 0 8px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: #ff5555;
+}

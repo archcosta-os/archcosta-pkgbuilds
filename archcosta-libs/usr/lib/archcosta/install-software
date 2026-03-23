@@ -1,0 +1,26 @@
+#!/bin/bash
+
+install_software() {
+  local package="$1"
+
+  if [[ -z "$package" ]]; then
+    echo "Usage: install_software <package_name>"
+    return 1
+  fi
+
+  if command -v pamac &>/dev/null; then
+    pkexec pamac install --no-confirm "$package"
+  elif command -v octopi &>/dev/null; then
+    pkexec octopi -i "$package"
+  elif command -v yay &>/dev/null; then
+    pkexec yay -S --noconfirm "$package"
+  elif command -v paru &>/dev/null; then
+    pkexec paru -S --noconfirm "$package"
+  else
+    pkexec pacman -S --noconfirm "$package"
+  fi
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  install_software "$@"
+fi

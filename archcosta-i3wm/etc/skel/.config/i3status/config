@@ -1,0 +1,116 @@
+general {
+  color_bad = "#ff5555"
+  color_degraded = "#f1fa8c"
+  color_good = "#50fa7b"
+  color_pause = "#ffb86c"
+  color_bad = "#ff5555"
+  format = " %date% | %time% | %battery% | %wireless_essid% | %cpu% | %memory% | %volume% "
+  format_alt = " %date% | %time% | %cpu% | %memory% | %disk% | %temperature_core% | %volume% "
+  interval = 1
+  output_format = "i3bar"
+}
+
+order += "ipv6"
+order += "disk /"
+order += "disk /home"
+order += "temperature_cpu"
+order += "cpu_temperature 0"
+order += "load"
+order += "cpu_usage"
+order += "cpu_freq"
+order += "memory"
+order += "swap"
+order += "disk /
+order += "battery all"
+order += "run_watch DHCP"
+order += "run_watch VPN"
+order += "wireless _first_"
+order += "ethernet _first_"
+order += "volume master"
+order += "date date"
+order += "time"
+
+battery all {
+  format = " %status %percentage %consumption"
+  format_down = "No Battery"
+  status_chr = "⚡"
+  status_bat = ""
+  status_full = ""
+  status_unk = "?"
+  status_notpresent = "X"
+  path = "/sys/class/power_supply/BAT%d/uevent"
+  low_threshold = 10
+  threshold_type = time
+}
+
+cpu_usage {
+  format = " cpu %usage"
+  degrade_on = {
+    avg_cpu > 90
+  }
+}
+
+cpu_temperature 0 {
+  format = " %temp°C"
+  path = "/sys/class/thermal/thermal_zone0/temp"
+}
+
+cpu_freq {
+  format = " %frequency"
+  integer = true
+}
+
+disk "/" {
+  format = " / %avail"
+}
+
+disk "/home" {
+  format = " /home %avail"
+}
+
+load {
+  format = " load %1min"
+  degrade_on = {
+    avg_load > 10
+  }
+}
+
+memory {
+  format = " ram %used/%total"
+  threshold_degraded = "10%"
+  degraded = "< 10%"
+}
+
+run_watch DHCP {
+  pidfile = "/var/run/dhclient*.pid"
+  format = " DHCP"
+}
+
+run_watch VPN {
+  pidfile = "/var/run/vpnc/pid"
+  format = " VPN"
+}
+
+ethernet _first_ {
+  format_up = " %ip"
+  format_down = " no eth"
+}
+
+volume master {
+  format = " vol %volume"
+  format_muted = " vol muted"
+  device = "default"
+}
+
+wireless _first_ {
+  format_up = " wifi %essid"
+  format_down = " no wifi"
+}
+
+date date {
+  format = " %d.%m.%Y"
+}
+
+time date {
+  format = " %H:%M:%S"
+}

@@ -1,26 +1,34 @@
+# Maintainer: ArchCosta Team <archcosta@example.com>
+
 pkgname=archcosta-hooks
-pkgver=1.0
+pkgver=1.0.0
 pkgrel=1
-pkgdesc="ArchCosta pacman hooks for system branding"
+pkgdesc="Pacman hooks for ArchCosta system management"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
-license=('GPL3')
-depends=('bash' 'sed' 'grep' 'coreutils')
-source=("archcosta-hooks-runner"
-        "25-archcosta-os-release.hook"
-        "archcosta-lsb-release.hook"
-        "archcosta-hooks.hook"
-        "os-release-archcosta"
-        "lsb-release-archcosta")
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
+license=('GPL-3.0-or-later')
+depends=('pacman' 'pacman-contrib' 'grub' 'awk' 'archcosta-libs')
+optdepends=('linux-headers: for kernel module hooks')
+install="${pkgname}.install"
+source=(
+  "update-grub.hook"
+  "grub-install.hook"
+  "mkinitcpio-install.hook"
+  "zzz_post.hook"
+  "os-release.hook"
+  "orphans.hook"
+)
+sha256sums=('SKIP')
 
 package() {
-    install -Dm755 archcosta-hooks-runner "$pkgdir/usr/bin/archcosta-hooks-runner"
-    
-    install -Dm644 25-archcosta-os-release.hook "$pkgdir/usr/share/libalpm/hooks/25-archcosta-os-release.hook"
-    install -Dm644 archcosta-lsb-release.hook "$pkgdir/usr/share/libalpm/hooks/archcosta-lsb-release.hook"
-    install -Dm644 archcosta-hooks.hook "$pkgdir/usr/share/libalpm/hooks/archcosta-hooks.hook"
-    
-    install -Dm644 os-release-archcosta "$pkgdir/usr/lib/archcosta-release"
-    install -Dm644 lsb-release-archcosta "$pkgdir/usr/lib/archcosta-lsb-release"
+  install -d "${pkgdir}/usr/share/libalpm/hooks"
+  install -d "${pkgdir}/etc/pacman.d/hooks"
+
+  install -Dm644 update-grub.hook "${pkgdir}/usr/share/libalpm/hooks/99-update-grub.hook"
+  install -Dm644 grub-install.hook "${pkgdir}/usr/share/libalpm/hooks/99-grub-install.hook"
+  install -Dm644 orphans.hook "${pkgdir}/usr/share/libalpm/hooks/99-orphans.hook"
+  install -Dm644 os-release.hook "${pkgdir}/usr/share/libalpm/hooks/20-os-release.hook"
+  install -Dm644 zzz_post.hook "${pkgdir}/usr/share/libalpm/hooks/zzz_post.hook"
+
+  install -Dm644 mkinitcpio-install.hook "${pkgdir}/etc/pacman.d/hooks/90-mkinitcpio-install.hook"
 }

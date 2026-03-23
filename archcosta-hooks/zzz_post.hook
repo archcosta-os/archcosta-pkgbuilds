@@ -1,0 +1,12 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Operation = Deselect
+
+[Action]
+Description = Cleaning up package cache...
+When = PostTransaction
+Exec = /usr/bin/paccache -rk1
+NeedsTargets

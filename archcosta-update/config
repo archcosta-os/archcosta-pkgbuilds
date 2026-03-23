@@ -1,0 +1,33 @@
+# ArchCosta Update Configuration
+
+[general]
+# Enable color output
+color=true
+
+# Refresh package databases before upgrade
+auto_refresh=true
+
+# Clean package cache after upgrade
+auto_clean=false
+
+# Reboot after kernel update
+auto_reboot=false
+
+[mirrors]
+# Use reflector to optimize mirrors
+auto_reflector=false
+# reflector parameters
+reflector_args="--latest 10 --protocol https --sort rate"
+
+[notifications]
+# Show desktop notifications
+desktop_notifications=true
+
+# Show news/announcements
+show_news=true
+
+[logging]
+# Log file location
+log_file="/var/log/archcosta/update.log"
+# Maximum log file size in MB
+max_log_size=10

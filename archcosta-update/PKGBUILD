@@ -1,14 +1,24 @@
+# Maintainer: ArchCosta Team <archcosta@example.com>
+
 pkgname=archcosta-update
-pkgver=1.0
+pkgver=1.0.0
 pkgrel=1
-pkgdesc="A robust system update wrapper for ArchCosta"
+pkgdesc="ArchCosta system update utility"
 arch=('any')
-url="https://github.com/archcosta-os/archcosta-applications"
-license=('GPL3')
-depends=('bash' 'pacman' 'reflector')
-source=()
-sha256sums=()
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL-3.0-or-later')
+depends=('coreutils' 'sed' 'gawk' 'pacman' 'wget')
+conflicts=('garuda-update')
+backup=('etc/archcosta/update/config')
+source=(
+  "archcosta-update"
+  "config"
+)
+sha256sums=('SKIP' 'SKIP')
 
 package() {
-    install -Dm755 "$startdir/archcosta-update" "$pkgdir/usr/bin/archcosta-update"
+  install -Dm755 archcosta-update "${pkgdir}/usr/bin/archcosta-update"
+  install -Dm755 archcosta-update "${pkgdir}/usr/bin/update"
+  install -Dm644 config "${pkgdir}/etc/archcosta/update/config"
+  install -d "${pkgdir}/var/log/archcosta"
 }

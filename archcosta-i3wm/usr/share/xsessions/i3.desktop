@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=i3
+Comment=Improved tiling window manager
+Exec=i3
+Icon=i3
+Type=Application
+DesktopNames=i3
+Keywords=tiling;wm;window;manager;windowmanager

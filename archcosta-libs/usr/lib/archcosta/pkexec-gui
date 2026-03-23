@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# GUI wrapper for pkexec
+
+export TEXTDOMAIN=archcosta-libs
+export TEXTDOMAINDIR=/usr/share/locale
+
+ACTION_DESCRIPTION=$(gettext "Authentication Required")
+MESSAGE=$(gettext "Enter your password to perform administrative actions.")
+
+pkexec --description "$ACTION_DESCRIPTION" --message "$MESSAGE" "$@"

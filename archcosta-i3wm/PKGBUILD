@@ -1,0 +1,34 @@
+# Maintainer: ArchCosta Team <archcosta@example.com>
+
+pkgname=archcosta-i3wm
+pkgver=1.0
+pkgrel=1
+pkgdesc="i3wm tiling window manager configuration for ArchCosta"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL-3.0-or-later')
+depends=('i3-wm' 'i3status' 'dmenu' 'rofi' 'feh' 'picom' 'lxappearance' 'polkit-gnome' 'network-manager-applet' 'volumeicon' 'playerctl')
+optdepends=('i3lock: screen locker' 'i3status: status bar' 'rofi: application launcher' 'dmenu: classic menu')
+provides=('archcosta-windowmanager')
+conflicts=('archcosta-bspwm' 'archcosta-qtile' 'archcosta-hyprland')
+replaces=('archcosta-i3wm')
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  install -d "${pkgdir}/etc/skel/.config/i3"
+  install -d "${pkgdir}/etc/skel/.config/i3status"
+  install -d "${pkgdir}/etc/skel/.config/dmenu"
+  install -d "${pkgdir}/etc/skel/.config/rofi"
+  install -d "${pkgdir}/etc/skel/.config/picom"
+  install -d "${pkgdir}/usr/share/xsessions"
+
+  cp -rf etc/skel/.config/i3 "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/i3status "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/dmenu "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/rofi "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/picom "${pkgdir}/etc/skel/.config/"
+
+  install -Dm644 usr/share/xsessions/i3.desktop "${pkgdir}/usr/share/xsessions/i3.desktop"
+  install -Dm644 usr/share/xsessions/i3-with-shmlog.desktop "${pkgdir}/usr/share/xsessions/i3-with-shmlog.desktop"
+}

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=i3 with shmlog
+Comment=Improved tiling window manager (with shared memory logging)
+Exec=i3 -V -v2 -L /tmp/i3log
+Icon=i3
+Type=Application
+DesktopNames=i3
+Keywords=tiling;wm;window;manager;windowmanager

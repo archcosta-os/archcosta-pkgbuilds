@@ -1,0 +1,6 @@
+post_upgrade() {
+  if (( $(vercmp "$2" "1.0-1") < 0 )); then
+    echo "==> ArchCosta hooks installed successfully."
+    echo "==> GRUB and mkinitcpio will be automatically updated when kernels are upgraded."
+  fi
+}

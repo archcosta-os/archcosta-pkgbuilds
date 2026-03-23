@@ -1,0 +1,22 @@
+# Maintainer: ArchCosta Team <archcosta@example.com>
+
+pkgname=archcosta-health
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="ArchCosta system health checker"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL-3.0-or-later')
+depends=('pacman' 'python' 'inxi')
+optdepends=(
+  'smartmontools: for SMART disk health checks'
+  'lm_sensors: for CPU temperature monitoring'
+)
+source=("${pkgname}" "${pkgname}.conf")
+sha256sums=('SKIP' 'SKIP')
+
+package() {
+  install -Dm755 "${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
+  install -Dm644 "${pkgname}.conf" "${pkgdir}/etc/archcosta/health/${pkgname}.conf"
+  install -d "${pkgdir}/var/lib/archcosta/health"
+}

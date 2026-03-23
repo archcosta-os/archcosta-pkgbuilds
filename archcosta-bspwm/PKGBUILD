@@ -1,0 +1,32 @@
+# Maintainer: ArchCosta Team <archcosta@example.com>
+
+pkgname=archcosta-bspwm
+pkgver=1.0
+pkgrel=1
+pkgdesc="bspwm tiling window manager configuration for ArchCosta"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL-3.0-or-later')
+depends=('bspwm' 'sxhkd' 'rofi' 'feh' 'picom' 'lxappearance' 'polkit-gnome' 'network-manager-applet' 'volumeicon' 'playerctl')
+optdepends=('sxhkd: keybindings daemon' 'rofi: application launcher' 'polybar: status bar')
+provides=('archcosta-windowmanager')
+conflicts=('archcosta-i3wm' 'archcosta-qtile' 'archcosta-hyprland')
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  install -d "${pkgdir}/etc/skel/.config/bspwm"
+  install -d "${pkgdir}/etc/skel/.config/sxhkd"
+  install -d "${pkgdir}/etc/skel/.config/rofi"
+  install -d "${pkgdir}/etc/skel/.config/picom"
+  install -d "${pkgdir}/etc/skel/.config/polybar"
+  install -d "${pkgdir}/usr/share/xsessions"
+
+  cp -rf etc/skel/.config/bspwm "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/sxhkd "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/rofi "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/picom "${pkgdir}/etc/skel/.config/"
+  cp -rf etc/skel/.config/polybar "${pkgdir}/etc/skel/.config/"
+
+  install -Dm644 usr/share/xsessions/bspwm.desktop "${pkgdir}/usr/share/xsessions/bspwm.desktop"
+}

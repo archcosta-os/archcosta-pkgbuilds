@@ -1,0 +1,30 @@
+#!/bin/bash
+
+launch_terminal() {
+  local terminals=(
+    "alacritty"
+    "xfce4-terminal"
+    "konsole"
+    "gnome-terminal"
+    "kgx"
+    "terminator"
+    "urxvt"
+    "xterm"
+  )
+
+  for term in "${terminals[@]}"; do
+    if command -v "$term" &>/dev/null; then
+      if [[ "$term" == "alacritty" ]] || [[ "$term" == "xfce4-terminal" ]] || [[ "$term" == "konsole" ]]; then
+        nohup "$term" &>/dev/null &
+      else
+        "$term" &
+      fi
+      return 0
+    fi
+  done
+
+  echo "No terminal emulator found!" >&2
+  return 1
+}
+
+launch_terminal

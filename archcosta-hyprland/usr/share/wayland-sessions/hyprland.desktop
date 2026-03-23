@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Hyprland
+Comment=Hyprland Wayland Compositor
+Exec=Hyprland
+Icon=hyprland
+Type=Application
+DesktopNames=Hyprland

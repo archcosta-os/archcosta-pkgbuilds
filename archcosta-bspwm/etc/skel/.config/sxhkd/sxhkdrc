@@ -1,0 +1,162 @@
+# sxhkd keybindings for ArchCosta
+
+# Terminal
+super + Return
+  alacritty
+
+# Application launcher
+super + d
+  rofi -show drun
+
+# Run command
+super + shift + d
+  rofi -show run
+
+# Kill focused window
+super + q
+  bspc window -c
+
+# Restart bspwm
+super + shift + r
+  bspc wm -r
+
+# Exit bspwm
+super + shift + e
+  bspc quit
+
+# Alternate between the tiled and monocle layout
+super + m
+  bspc desktop -l next
+
+# Send the newest marked node to the newest preselected node
+super + y
+  bspc node -y newest
+
+# Swap the current node and the biggest window
+super + g
+  bspc node -s biggest
+
+# Focus the node in the given direction
+super + {j, k, l, semicolon}
+  bspc node -f {west, south, north, east}
+
+# Move the focused node in the given direction
+super + shift + {j, k, l, semicolon}
+  bspc node -s {west, south, north, east}
+
+# Focus the node for the given path jump
+super + {p, n, b, comma, period}
+  bspc node -f @{parent, local, first, second, last}
+
+# Focus the next/previous node in the current desktop
+super + {_, shift + }c
+  bspc node -f {next, prev}
+
+# Focus the next/previous desktop in the current monitor
+super + bracket{left, right}
+  bspc desktop -f {prev, next}
+
+# Focus the last desktop
+super + Tab
+  bspc desktop -f last
+
+# Focus the older or newer node in the focus history
+super + o
+  bspc wm -h off; \
+  bspc node {older, newer} -f; \
+  bspc wm -h on
+
+# Focus or send to the given desktop
+super + {_, shift + }{1-9, 0}
+  bspc {desktop -f, node -d} '^{1-9, 10}'
+
+# Preselect the direction
+super + ctrl + {h, j, k, l}
+  bspc node -p {west, south, north, east}
+
+# Preselect the ratio
+super + ctrl + {1-9}
+  bspc node -o 0.{1-9}
+
+# Cancel the preselection for the focused node
+super + ctrl + space
+  bspc node -p cancel
+
+# Rotate the entire tree
+super + r
+  bspc node @/ -R 90
+
+# Set the node flags
+super + ctrl + {m, x, f}
+  bspc node -g {marked, locked, sticky}
+
+# Set the node flags
+super + ctrl + {m, x, f}
+  bspc node -g {marked, locked, sticky}
+
+# Hide the current node
+super + ctrl + u
+  bspc node -h all; \
+  bspc query -N -d | xargs -I id -n 1 bspc config -n id -p hidden fix_size on; \
+  bspc node -t hidden
+
+# Unhide the node
+super + ctrl + shift + u
+  bspc node -t tiled; \
+  bspc query -N -d | xargs -I id -n 1 bspc config -n id -p hidden off; \
+  bspc wm -O
+
+# Fullscreen
+super + f
+  bspc node -t {fullscreen, tiled}
+
+# Floating
+super + shift + space
+  bspc node -t {floating, tiled}
+
+# Focus the node in the given direction
+super + {Left, Down, Up, Right}
+  bspc node -f {west, south, north, east}
+
+# Move the focused node in the given direction
+super + shift + {Left, Down, Up, Right}
+  bspc node -s {west, south, north, east}
+
+# Balance the tree
+super + b
+  bspc node @/ -B
+
+# Equalize the tree
+super + equal
+  bspc node -e
+
+# Toggle desktops 1 and 10
+super + alt + {1,0}
+  bspc desktop -s {1,10}; bspc desktop -f {1,10}
+
+# Screenshot
+Print
+  scrot '%Y-%m-%d_$wx$h.png' -e 'mv $f ~/Pictures/'
+
+super + Print
+  scrot -u '%Y-%m-%d_$wx$h.png' -e 'mv $f ~/Pictures/'
+
+# Lock screen
+super + shift + x
+  i3lock -i /usr/share/backgrounds/archlinux/archlinux-logo.png -t
+
+# Volume controls
+XF86AudioLowerVolume
+  amixer -q set Master 5%-
+XF86AudioRaiseVolume
+  amixer -q set Master 5%+
+XF86AudioMute
+  amixer -q set Master toggle
+
+# Media player controls
+XF86AudioPlay
+  playerctl play-pause
+XF86AudioNext
+  playerctl next
+XF86AudioPrev
+  playerctl previous
