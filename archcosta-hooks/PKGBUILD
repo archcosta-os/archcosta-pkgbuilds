@@ -17,8 +17,9 @@ source=(
   "zzz_post.hook"
   "os-release.hook"
   "orphans.hook"
+  "${pkgname}.install"
 )
-sha256sums=('SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 package() {
   install -d "${pkgdir}/usr/share/libalpm/hooks"
