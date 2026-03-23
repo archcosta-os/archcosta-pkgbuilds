@@ -1,13 +1,14 @@
 pkgname=archcosta-plasma
 pkgver=1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="ArchCosta KDE Plasma Desktop meta-package"
 arch=('any')
-url="https://github.com/archcosta-os/archcosta-plasma"
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 depends=(
   'plasma-meta'
-  'sddm'
+  'lightdm'
+  'lightdm-gtk-greeter'
   'dolphin'
   'ark'
   'okular'
@@ -20,7 +21,6 @@ depends=(
   'archcosta-artwork'
 )
 package() {
-  # This is a meta-package, it only provides dependencies.
   mkdir -p "$pkgdir/usr/share/archcosta"
   echo "ArchCosta Plasma Desktop Environment" > "$pkgdir/usr/share/archcosta/plasma"
 }
