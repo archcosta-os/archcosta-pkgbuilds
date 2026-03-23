@@ -33,7 +33,7 @@ Main() {
                 RunInTerminal "sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys" "Fixing GPG Keys"
                 ;;
             "Edit Pacman Conf")
-                RunInTerminal "sudo mousepad /etc/pacman.conf" "Editing Config"
+                RunInTerminal "xdg-open /etc/pacman.conf" "Editing Config"
                 ;;
         esac
     fi

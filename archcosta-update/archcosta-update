@@ -9,11 +9,13 @@ echo "--------------------------------------------------"
 
 # 1. Refresh Keyring
 echo ":: Updating keyrings..."
-sudo pacman -Sy --needed --noconfirm archlinux-keyring cachyos-keyring 2>/dev/null
+sudo pacman -Sy --needed --noconfirm archlinux-keyring 2>/dev/null
 
 # 2. Refresh Mirrors
 echo ":: Finding fastest mirrors..."
-sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+if command -v reflector >/dev/null 2>&1; then
+    sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist 2>/dev/null
+fi
 
 # 3. System Update
 echo ":: Synchronizing package databases and upgrading system..."

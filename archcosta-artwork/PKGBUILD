@@ -1,6 +1,6 @@
 pkgname=archcosta-artwork
-pkgver=1.1
-pkgrel=15
+pkgver=1.2
+pkgrel=1
 pkgdesc="Logos, wallpapers and grub themes for ArchCosta"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
@@ -22,7 +22,7 @@ package() {
             "$pkgdir/usr/share/pixmaps/archcosta-logo.svg" 2>/dev/null || true
     fi
     
-    # Plymouth
+    # Plymouth theme
     if [ -d "$srcdir/src/plymouth/archcosta" ]; then
         mkdir -p "$pkgdir/usr/share/plymouth/themes/archcosta"
         cp -r "$srcdir/src/plymouth/archcosta/." \
@@ -34,5 +34,23 @@ package() {
         mkdir -p "$pkgdir/usr/share/grub/themes/archcosta"
         cp -r "$srcdir/src/grub/archcosta-grub-theme/." \
             "$pkgdir/usr/share/grub/themes/archcosta/"
+    fi
+    
+    # Wallpapers - Create default ArchCosta wallpaper if not exists
+    mkdir -p "$pkgdir/usr/share/backgrounds/archcosta"
+    
+    # Create a simple SVG wallpaper if none exists
+    if [ ! -f "$srcdir/src/wallpapers/archcosta-default.jpg" ] && [ ! -f "$pkgdir/usr/share/backgrounds/archcosta/archcosta-default.jpg" ]; then
+        # Install any found wallpapers
+        if [ -d "$srcdir/src/wallpapers" ]; then
+            cp -r "$srcdir/src/wallpapers/"* "$pkgdir/usr/share/backgrounds/archcosta/" 2>/dev/null || true
+        fi
+    fi
+    
+    # Icon theme symlink for archcosta-logo
+    mkdir -p "$pkgdir/usr/share/icons/hicolor/48x48/apps"
+    if [ -f "$pkgdir/usr/share/pixmaps/archcosta-logo.svg" ]; then
+        cp "$pkgdir/usr/share/pixmaps/archcosta-logo.svg" \
+           "$pkgdir/usr/share/icons/hicolor/scalable/apps/archcosta-logo.svg" 2>/dev/null || true
     fi
 }

@@ -1,13 +1,13 @@
 [org.mate.background]
-picture-filename='/usr/share/wallpapers/archcosta-wallpapers/White Tailed Eagle.png'
+picture-filename='/usr/share/backgrounds/archcosta/archcosta-default.jpg'
 
 [org.mate.interface]
 enable-animations=true
-gtk-theme='Sweet-Dark'
-icon-theme='Yaru-magenta-dark'
+gtk-theme='Adwaita'
+icon-theme='Adwaita'
 
 [org.mate.Marco.general]
-theme='Sweet-Dark'
+theme='Adwaita'
 compositing-fast-alt-tab=true
 compositing-manager=true
 
@@ -23,19 +23,10 @@ start-with-status-bar=true
 [org.mate.caja.preferences]
 thumbnail-limit=1000
 
-[org.mate.NotificationDaemon]
-theme='coco'
-
 [org.gtk.Settings.FileChooser]
 sort-directories-first=true
-clock-format='12h'
-
-[org.onboard]
-theme='/usr/share/onboard/themes/Droid.theme'
-start-minimized=true
-xembed-onboard=true
 
 [x.dm.slick-greeter]
-background='/usr/share/wallpapers/archcosta-wallpapers/White Tailed Eagle.png'
-theme-name='Sweet-Dark'
-icon-theme-name='Yaru-magenta-dark'
+background='/usr/share/backgrounds/archcosta/archcosta-default.jpg'
+theme-name='Adwaita'
+icon-theme-name='Adwaita'

@@ -1,19 +1,21 @@
 pkgname=archcosta-mate-settings
 pkgver=1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="ArchCosta MATE configuration files"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 source=()
 sha256sums=()
-prepare() {
-    if [ ! -d "$srcdir/etc" ]; then
-        [ -d "$startdir/etc" ] && cp -r "$startdir/etc" "$srcdir/"
-        [ -d "$startdir/usr" ] && cp -r "$startdir/usr" "$srcdir/"
-    fi
-}
+
 package() {
-    [ -d "$srcdir/etc" ] && cp -r "$srcdir/etc" "$pkgdir/"
-    [ -d "$srcdir/usr" ] && cp -r "$srcdir/usr" "$pkgdir/"
+    # Install etc/skel files
+    if [ -d "$startdir/etc/skel" ]; then
+        cp -r "$startdir/etc/skel/." "$pkgdir/etc/skel/"
+    fi
+    
+    # Install usr files
+    if [ -d "$startdir/usr" ]; then
+        cp -r "$startdir/usr/." "$pkgdir/usr/"
+    fi
 }

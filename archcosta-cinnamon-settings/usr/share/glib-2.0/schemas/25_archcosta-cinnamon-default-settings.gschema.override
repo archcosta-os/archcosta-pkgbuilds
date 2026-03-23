@@ -5,7 +5,7 @@ next-applet-id=14
 panel-zone-symbolic-icon-sizes='[{"panelId": 1, "left": 28, "center": 28, "right": 16}]'
 panels-autohide=['1:intel']
 panels-height=['1:31']
-favorite-apps=['firedragon.desktop', 'org.gnome.Terminal.desktop', 'nemo.desktop', 'io.github.celluloid_player.Celluloid.desktop', 'cinnamon-settings.desktop']
+favorite-apps=['firefox.desktop', 'cinnamon-settings.desktop', 'nemo.desktop', 'software.desktop', 'cinnamon-terminal.desktop']
 
 [org.cinnamon.settings-daemon.plugins.power]
 idle-dim-battery=true
@@ -13,9 +13,8 @@ idle-dim-battery=true
 [org.freedesktop.ibus.general.hotkey]
 triggers=['<Control>space']
 
-
 [org.cinnamon.desktop.background]
-picture-uri='file:///usr/share/wallpapers/archcosta-wallpapers/background.jpg'
+picture-uri='file:///usr/share/backgrounds/archcosta/archcosta-default.jpg'
 
 [org.cinnamon.desktop.input-sources]
 xkb-options=['grp:alt_shift_toggle']
@@ -24,18 +23,16 @@ xkb-options=['grp:alt_shift_toggle']
 clock-show-date=true
 cursor-blink-time=1200
 cursor-size=24
-cursor-theme='Warbird'
 enable-animations=true
 font-name='Noto Sans 10'
-gtk-theme='Sweet-Dark'
-icon-theme='BeautyLine'
-
+gtk-theme='Adwaita'
+icon-theme='Adwaita'
 
 [org.cinnamon.desktop.sound]
-theme-name='LinuxMint'
+theme-name='freedesktop'
 
 [org.cinnamon.theme]
-name='Sweet-Dark'
+name='Adwaita'
 
 [org.cinnamon.desktop.peripherals.keyboard]
 numlock-state=true
@@ -56,44 +53,25 @@ action-scroll-titlebar='opacity'
 min-window-opacity=30
 mouse-button-modifier='<Super>'
 resize-with-right-button=true
-theme='Sweet-Dark'
+theme='Adwaita'
 titlebar-font='Noto Sans Bold 10'
 
 [org.gtk.Settings.FileChooser]
 sort-directories-first=true
-clock-format='12h'
 
 [org.nemo.desktop] 
 computer-icon-visible=true
 trash-icon-visible=true
 
-
-[org.onboard]
-theme='/usr/share/onboard/themes/Droid.theme'
-start-minimized=true
-xembed-onboard=true
-
-
 [x.dm.slick-greeter]
-background="/usr/share/wallpapers/archcosta-wallpapers/background.jpg"
-theme-name="Sweet-Dark"
-icon-theme-name="BeautyLine"
+background="/usr/share/backgrounds/archcosta/archcosta-default.jpg"
+theme-name="Adwaita"
+icon-theme-name="Adwaita"
 font-name="Cantarell Regular 10"
 
 [org.gnome.Terminal.Legacy.Profile]
 visible-name='ArchCosta'
 default-size-columns=110
 default-size-rows=30
-cursor-shape='underline'
-cursor-blink-mode='system'
-use-transparent-background=true
-background-transparency-percent=15
-background-color='rgb(46,52,54)'
-bold-is-bright=true
-foreground-color='rgb(211,215,207)'
-use-theme-colors=true
 scroll-on-output=false
 scrollbar-policy='always'
-custom-command='/usr/bin/fish'
-use-custom-command=true
-

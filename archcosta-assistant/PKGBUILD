@@ -5,7 +5,7 @@ pkgdesc="ArchCosta System maintenance GUI"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-applications"
 license=('GPL3')
-depends=('archcosta-bash-shared' 'yad' 'pacman' 'reflector' 'mousepad')
+depends=('archcosta-bash-shared' 'yad' 'pacman' 'reflector')
 source=()
 sha256sums=()
 

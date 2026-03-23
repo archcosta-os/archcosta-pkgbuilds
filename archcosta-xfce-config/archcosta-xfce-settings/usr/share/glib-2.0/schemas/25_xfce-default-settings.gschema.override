@@ -1,7 +1,6 @@
 [org.gnome.desktop.interface]
-gtk-theme='Adwaita-dark'
-icon-theme='Papirus-Dark'
+gtk-theme='Adwaita'
+icon-theme='Adwaita'
 
-
-
-
+[org.xfce.mousepad]
+history-backup=false

@@ -3,13 +3,44 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
 import os
+import subprocess
+import shutil
+
+def get_default_browser():
+    browser_order = ['firefox', 'chromium', 'google-chrome', 'brave-browser', 'epiphany', 'konqueror']
+    for browser in browser_order:
+        if shutil.which(browser):
+            return browser
+    return 'xdg-open'
+
+def get_terminal():
+    term_order = ['xfce4-terminal', 'gnome-terminal', 'konsole', 'mate-terminal', 'xterm', 'lxterminal']
+    for term in term_order:
+        if shutil.which(term):
+            if term == 'xfce4-terminal':
+                return 'xfce4-terminal -e'
+            elif term == 'gnome-terminal':
+                return 'gnome-terminal --'
+            elif term == 'konsole':
+                return 'konsole -e'
+            elif term == 'mate-terminal':
+                return 'mate-terminal -e'
+            else:
+                return f'{term} -e'
+    return 'xterm -e'
+
+def run_cmd(cmd):
+    subprocess.Popen(cmd, shell=True)
 
 class WelcomeWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Welcome to ArchCosta OS")
         self.set_border_width(20)
-        self.set_default_size(500, 400)
+        self.set_default_size(500, 450)
         self.set_position(Gtk.WindowPosition.CENTER)
+        
+        self.browser = get_default_browser()
+        self.terminal = get_terminal()
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=15)
         self.add(vbox)
@@ -29,30 +60,34 @@ class WelcomeWindow(Gtk.Window):
         vbox.pack_start(grid, True, True, 0)
 
         btn_update = Gtk.Button(label="Update System")
-        btn_update.connect("clicked", self.run_cmd, "xfce4-terminal -e 'sudo pacman -Syu'")
+        btn_update.connect("clicked", self.run_cmd, f'{self.terminal} "sudo pacman -Syu"')
         grid.attach(btn_update, 0, 0, 1, 1)
 
-        btn_apps = Gtk.Button(label="Install Apps")
-        btn_apps.connect("clicked", self.run_cmd, "xfce4-appfinder")
+        btn_apps = Gtk.Button(label="Software Manager")
+        btn_apps.connect("clicked", self.run_cmd, 'xdg-open https://archcos.io/apps || pamac-manager || gnome-software || plasma-discover')
         grid.attach(btn_apps, 1, 0, 1, 1)
 
         btn_web = Gtk.Button(label="Open Browser")
-        btn_web.connect("clicked", self.run_cmd, "brave-browser")
+        btn_web.connect("clicked", self.run_cmd, f'{self.browser} https://archcos.io')
         grid.attach(btn_web, 0, 1, 1, 1)
 
         btn_wiki = Gtk.Button(label="Documentation")
-        btn_wiki.connect("clicked", self.run_cmd, "brave-browser https://github.com/archcosta-os/archcosta-wiki")
+        btn_wiki.connect("clicked", self.run_cmd, f'{self.browser} https://github.com/archcosta-os/archcosta-wiki')
         grid.attach(btn_wiki, 1, 1, 1, 1)
 
         btn_github = Gtk.Button(label="GitHub Organization")
-        btn_github.connect("clicked", self.run_cmd, "brave-browser https://github.com/archcosta-os")
+        btn_github.connect("clicked", self.run_cmd, f'{self.browser} https://github.com/archcosta-os')
         grid.attach(btn_github, 0, 2, 2, 1)
+
+        btn_install = Gtk.Button(label="Install ArchCosta")
+        btn_install.connect("clicked", self.run_cmd, 'sudo calamares -d')
+        grid.attach(btn_install, 0, 3, 2, 1)
 
         footer = Gtk.Label(label="Built with love for low-end systems.")
         vbox.pack_start(footer, False, False, 0)
 
     def run_cmd(self, widget, cmd):
-        os.system(cmd)
+        run_cmd(cmd)
 
 win = WelcomeWindow()
 win.connect("destroy", Gtk.main_quit)
