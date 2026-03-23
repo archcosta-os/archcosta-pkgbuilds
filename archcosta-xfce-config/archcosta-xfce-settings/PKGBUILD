@@ -1,14 +1,25 @@
 pkgname=archcosta-xfce-settings
 pkgver=1.0
-pkgrel=1
-pkgdesc="ArchCosta configuration for ${new_name#archcosta-}"
+pkgrel=2
+pkgdesc="ArchCosta XFCE configuration files"
 arch=('any')
-url="https://github.com/archcosta-os/archcosta-settings"
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 source=()
 sha256sums=()
 
 package() {
-    [ -d "$startdir/etc" ] && cp -r "$startdir/etc" "$pkgdir/"
-    [ -d "$startdir/usr" ] && cp -r "$startdir/usr" "$pkgdir/"
+    # Create destination directories
+    install -d "$pkgdir/etc/skel/.config/xfce4"
+    install -d "$pkgdir/usr/share/glib-2.0/schemas"
+    
+    # Install etc/skel files
+    if [ -d "$startdir/etc/skel" ]; then
+        cp -r "$startdir/etc/skel/." "$pkgdir/etc/skel/"
+    fi
+    
+    # Install usr/share files
+    if [ -d "$startdir/usr/share/glib-2.0/schemas" ]; then
+        cp -r "$startdir/usr/share/glib-2.0/schemas/." "$pkgdir/usr/share/glib-2.0/schemas/"
+    fi
 }

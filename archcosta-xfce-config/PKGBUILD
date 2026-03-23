@@ -1,6 +1,6 @@
 pkgname=archcosta-xfce-config
 pkgver=1.0
-pkgrel=10
+pkgrel=11
 pkgdesc="ArchCosta XFCE configuration files"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
@@ -9,13 +9,17 @@ source=()
 sha256sums=()
 
 package() {
+    # Create destination directories
+    install -d "$pkgdir/etc/skel/.config/xfce4"
+    install -d "$pkgdir/usr/share/glib-2.0/schemas"
+    
     # Check if there's a subfolder with source files
     if [ -d "$startdir/archcosta-xfce-settings" ]; then
         if [ -d "$startdir/archcosta-xfce-settings/etc/skel" ]; then
             cp -r "$startdir/archcosta-xfce-settings/etc/skel/." "$pkgdir/etc/skel/"
         fi
-        if [ -d "$startdir/archcosta-xfce-settings/usr" ]; then
-            cp -r "$startdir/archcosta-xfce-settings/usr/." "$pkgdir/usr/"
+        if [ -d "$startdir/archcosta-xfce-settings/usr/share" ]; then
+            cp -r "$startdir/archcosta-xfce-settings/usr/share/." "$pkgdir/usr/share/"
         fi
     fi
     
@@ -23,7 +27,7 @@ package() {
     if [ -d "$startdir/etc/skel" ]; then
         cp -r "$startdir/etc/skel/." "$pkgdir/etc/skel/"
     fi
-    if [ -d "$startdir/usr" ]; then
-        cp -r "$startdir/usr/." "$pkgdir/usr/"
+    if [ -d "$startdir/usr/share" ]; then
+        cp -r "$startdir/usr/share/." "$pkgdir/usr/share/"
     fi
 }
