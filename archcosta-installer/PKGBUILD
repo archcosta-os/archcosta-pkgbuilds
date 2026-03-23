@@ -1,10 +1,10 @@
 # Maintainer: ArchCosta Team
 pkgname=archcosta-installer
 pkgver=260308
-pkgrel=2
+pkgrel=3
 pkgdesc="A modern, user-friendly graphical installation tool for ArchCosta Linux"
 arch=('any')
-url="https://github.com/Petexy/linexin-installer"
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL3')
 depends=('python' 'python-gobject' 'gtk4' 'libadwaita' 'python-yaml' 'python-requests' 'parted' 'util-linux' 'grub' 'efibootmgr' 'networkmanager' 'polkit')
 makedepends=('git')
