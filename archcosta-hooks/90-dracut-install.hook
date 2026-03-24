@@ -1,0 +1,17 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Target = linux
+Target = linux-lts
+Target = linux-zen
+Target = linux-hardened
+Target = linux-cachyos
+Target = dracut
+Target = intel-ucode
+Target = amd-ucode
+
+[Action]
+Description = Rebuilding dracut initramfs images and syncing to ESP...
+When = PostTransaction
+Exec = /usr/bin/bash -c 'dracut --force --regenerate-all && cp -a /boot/vmlinuz-* /boot/initramfs-* /boot/*-ucode.img /boot/efi/ 2>/dev/null || true'
