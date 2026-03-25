@@ -1,0 +1,19 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Target = linux
+Target = linux-lts
+Target = linux-zen
+Target = linux-hardened
+Target = linux-cachyos
+Target = grub
+Target = amd-ucode
+Target = intel-ucode
+
+[Action]
+Description = Updating GRUB configuration...
+When = PostTransaction
+Depends = grub
+Exec = /usr/bin/bash -c "if [ -f /boot/grub/grub.cfg ]; then grub-mkconfig -o /boot/grub/grub.cfg; fi"

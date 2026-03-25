@@ -2,23 +2,27 @@
 
 pkgname=archcosta-hooks
 pkgver=1.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Pacman hooks for ArchCosta system management"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
 license=('GPL-3.0-or-later')
 depends=('pacman' 'pacman-contrib' 'dracut' 'systemd' 'awk' 'archcosta-libs')
-optdepends=('linux-headers: for kernel module hooks')
+optdepends=(
+  'linux-headers: for kernel module hooks'
+  'grub: for legacy bootloader support'
+)
 install="${pkgname}.install"
 source=(
   "90-dracut-install.hook"
   "100-systemd-boot.hook"
+  "99-update-grub.hook"
   "zzz_post.hook"
   "os-release.hook"
   "orphans.hook"
   "${pkgname}.install"
 )
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 package() {
   install -d "${pkgdir}/usr/share/libalpm/hooks"
@@ -30,4 +34,5 @@ package() {
 
   install -Dm644 90-dracut-install.hook "${pkgdir}/usr/share/libalpm/hooks/90-dracut-install.hook"
   install -Dm644 100-systemd-boot.hook "${pkgdir}/usr/share/libalpm/hooks/100-systemd-boot.hook"
+  install -Dm644 99-update-grub.hook "${pkgdir}/usr/share/libalpm/hooks/99-update-grub.hook"
 }
