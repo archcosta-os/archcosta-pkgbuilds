@@ -1,0 +1,19 @@
+pkgname=archcosta-gnome
+pkgver=1.0
+pkgrel=1
+pkgdesc="ArchCosta GNOME Desktop meta-package"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+depends=(
+  'gnome'
+  'gnome-tweaks'
+  'lightdm'
+  'lightdm-gtk-greeter'
+  'archcosta-settings'
+  'archcosta-artwork'
+)
+package() {
+  mkdir -p "$pkgdir/usr/share/archcosta"
+  echo "ArchCosta GNOME Desktop Environment" > "$pkgdir/usr/share/archcosta/gnome"
+}
