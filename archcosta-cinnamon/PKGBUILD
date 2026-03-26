@@ -11,6 +11,7 @@ depends=(
   'lightdm-gtk-greeter'
   'nemo'
   'metacity'
+  'archcosta-cinnamon-settings'
   'archcosta-settings'
   'archcosta-artwork'
 )

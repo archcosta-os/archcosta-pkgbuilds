@@ -23,4 +23,10 @@ depends=(
 package() {
   mkdir -p "$pkgdir/usr/share/archcosta"
   echo "ArchCosta Plasma Desktop Environment" > "$pkgdir/usr/share/archcosta/plasma"
+
+  # Install default settings
+  if [ -d "$startdir/etc/skel" ]; then
+      install -d "$pkgdir/etc/skel"
+      cp -r "$startdir/etc/skel/." "$pkgdir/etc/skel/"
+  fi
 }

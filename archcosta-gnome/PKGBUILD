@@ -1,6 +1,6 @@
 pkgname=archcosta-gnome
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="ArchCosta GNOME Desktop meta-package"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
@@ -16,4 +16,15 @@ depends=(
 package() {
   mkdir -p "$pkgdir/usr/share/archcosta"
   echo "ArchCosta GNOME Desktop Environment" > "$pkgdir/usr/share/archcosta/gnome"
+
+  # Install default settings
+  if [ -d "$startdir/usr/share/glib-2.0/schemas" ]; then
+      install -d "$pkgdir/usr/share/glib-2.0/schemas"
+      cp -r "$startdir/usr/share/glib-2.0/schemas/." "$pkgdir/usr/share/glib-2.0/schemas/"
+  fi
+  
+  if [ -d "$startdir/etc/skel" ]; then
+      install -d "$pkgdir/etc/skel"
+      cp -r "$startdir/etc/skel/." "$pkgdir/etc/skel/"
+  fi
 }
