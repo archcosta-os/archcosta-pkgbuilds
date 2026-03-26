@@ -1,0 +1,18 @@
+pkgname=archcosta-xfce-settings
+pkgver=1.0
+pkgrel=2
+pkgdesc="ArchCosta XFCE configuration files"
+arch=('any')
+url="https://github.com/archcosta-os/archcosta-pkgbuilds"
+license=('GPL3')
+source=()
+sha256sums=()
+
+package() {
+    if [ -d "$startdir/etc/skel" ]; then
+        cp -r "$startdir/etc/skel/." "$pkgdir/etc/skel/"
+    fi
+    if [ -d "$startdir/usr" ]; then
+        cp -r "$startdir/usr/." "$pkgdir/usr/"
+    fi
+}

@@ -1,0 +1,6 @@
+[org.gnome.desktop.interface]
+gtk-theme='Adwaita'
+icon-theme='Adwaita'
+
+[org.xfce.mousepad]
+history-backup=false
