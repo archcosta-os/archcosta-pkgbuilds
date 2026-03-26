@@ -1,6 +1,6 @@
 pkgname=archcosta-xfce-settings
 pkgver=1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="ArchCosta XFCE configuration files"
 arch=('any')
 url="https://github.com/archcosta-os/archcosta-pkgbuilds"
@@ -9,10 +9,13 @@ source=()
 sha256sums=()
 
 package() {
-    if [ -d "$startdir/etc/skel" ]; then
-        cp -r "$startdir/etc/skel/." "$pkgdir/etc/skel/"
+    if [ -d "$srcdir/etc/skel" ]; then
+        install -dm755 "$pkgdir/etc/skel"
+        cp -r "$srcdir/etc/skel/." "$pkgdir/etc/skel/"
     fi
-    if [ -d "$startdir/usr" ]; then
-        cp -r "$startdir/usr/." "$pkgdir/usr/"
+
+    if [ -d "$srcdir/usr" ]; then
+        install -dm755 "$pkgdir/usr"
+        cp -r "$srcdir/usr/." "$pkgdir/usr/"
     fi
 }
